@@ -38,6 +38,22 @@ public protocol Graph {
 
 }
 
+extension Graph {
+
+    public func addUnDirectionEdge(between source: Vertex<Element>, and destination: Vertex<Element>, weight: Double?) {
+        addDirectionEdge(from: source, to: destination, weight: weight)
+        addDirectionEdge(from: destination, to: source, weight: weight)
+    }
+
+    public func add(edge:EdgeType, from edge1: Vertex<Element>, to edge2: Vertex<Element>, weight: Double?) {
+        edge == .directed
+            ? addDirectionEdge(from: edge1, to: edge2, weight: weight)
+            : addUnDirectionEdge(between: edge1, and: edge2, weight: weight)
+    }
+
+}
+
+/// **Adjacency List**
 public class AdjacencyList<T: Hashable>: Graph {
 
     private var adjacencies: [Vertex<T>: [Edge<T>]] = [:]
@@ -65,21 +81,26 @@ public class AdjacencyList<T: Hashable>: Graph {
     }
 }
 
-extension Graph {
+extension AdjacencyList: CustomStringConvertible {
 
-    public func addUnDirectionEdge(between source: Vertex<Element>, and destination: Vertex<Element>, weight: Double?) {
-        addDirectionEdge(from: source, to: destination, weight: weight)
-        addDirectionEdge(from: destination, to: source, weight: weight)
+  public var description: String {
+    var result = ""
+    for (vertex, edges) in adjacencies { // 1
+      var edgeString = ""
+      for (index, edge) in edges.enumerated() { // 2
+        if index != edges.count - 1 {
+          edgeString.append("\(edge.destination), ")
+        } else {
+          edgeString.append("\(edge.destination)")
+        }
+      }
+      result.append("\(vertex) ---> [ \(edgeString) ]\n") // 3
     }
-
-    public func add(edge:EdgeType, from edge1: Vertex<Element>, to edge2: Vertex<Element>, weight: Double?) {
-        edge == .directed
-            ? addDirectionEdge(from: edge1, to: edge2, weight: weight)
-            : addUnDirectionEdge(between: edge1, and: edge2, weight: weight)
-    }
-
+    return result
+  }
 }
 
+/// **Adjacency Matrix**
 public class AdjacencyMatrix<T>: Graph {
 
   private var vertices: [Vertex<T>] = []
@@ -123,5 +144,30 @@ public class AdjacencyMatrix<T>: Graph {
     }
 
     public func weight(from source: Vertex<T>, to destination: Vertex<T>) -> Double? { weights[source.index][destination.index] }
+}
+
+extension AdjacencyMatrix: CustomStringConvertible {
+
+  public var description: String {
+    // 1
+    let verticesDescription = vertices.map { "\($0)" }
+                                      .joined(separator: "\n")
+    // 2
+    var grid: [String] = []
+    for i in 0..<weights.count {
+      var row = ""
+      for j in 0..<weights.count {
+        if let value = weights[i][j] {
+          row += "\(value)\t"
+        } else {
+          row += "ø\t\t"
+        }
+      }
+      grid.append(row)
+    }
+    let edgesDescription = grid.joined(separator: "\n")
+    // 3
+    return "\(verticesDescription)\n\n\(edgesDescription)"
+  }
 }
 
