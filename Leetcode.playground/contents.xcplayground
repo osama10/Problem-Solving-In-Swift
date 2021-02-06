@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' buildActiveScheme='true'>
+    <pages>
+        <page name='strStr'/>
+        <page name='nondecreasingarray'/>
+        <page name='sqrt'/>
+        <page name='PowerOfThrre'/>
+        <page name='hasCycle'/>
+        <page name='IntersectionofTwoLinkedLists'/>
+        <page name='isPalindrome'/>
+        <page name='CountandSay'/>
+        <page name='isSymmetric'/>
+        <page name='LongestCommonPrefix'/>
+        <page name='MergeTwoBinaryTrees'/>
+        <page name='ValidParanthesis'/>
+        <page name='MergeTwoSortedList'/>
+        <page name='missingnumber'/>
+        <page name='validPalindrome'/>
+        <page name='IntersectionOfTwoArray'/>
+        <page name='firstUniqueChar'/>
+        <page name='trailingZeros'/>
+        <page name='MinStack'/>
+        <page name='FindCommonChar'/>
+        <page name='maxProfit'/>
+    </pages>
+</playground>
