@@ -1,5 +1,4 @@
 import UIKit
-
 //665
 func checkPossibility(_ nums: [Int]) -> Bool {
     var p: Int? = nil
