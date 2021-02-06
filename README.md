@@ -1,2 +1,2 @@
-# Problem-Solving--Swift
+# Problem-Solving
 Programing questions solution in swift
