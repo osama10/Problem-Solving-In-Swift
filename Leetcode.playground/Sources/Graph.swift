@@ -192,3 +192,63 @@ extension AdjacencyMatrix: CustomStringConvertible {
   }
 }
 
+
+public func bfs(_ graph: [[Int]], _ source: Int) -> [Int] {
+    var queue = [Int]()
+    var enqued = Set<Int>()
+    var visited = [Int]()
+
+    queue.append(source)
+    enqued.insert(source)
+
+    while !queue.isEmpty {
+        let source = queue.removeFirst()
+        visited.append(source)
+
+        for neigbor in graph[source] {
+            if !enqued.contains(neigbor) {
+                enqued.insert(neigbor)
+                queue.append(neigbor)
+            }
+        }
+    }
+
+    return visited
+}
+
+public func dfs(_ graph: [[Int]], _ source: Int) -> [Int] {
+
+    var stack = [Int]()
+    var visited = [Int]()
+    var pushed = Set<Int>()
+
+    stack.append(source)
+    pushed.insert(source)
+
+    while !stack.isEmpty {
+        let source = stack.popLast()!
+        visited.append(source)
+
+        for child in graph[source] {
+            if !pushed.contains(child) {
+                stack.append(child)
+                pushed.insert(child)
+            }
+        }
+    }
+
+    return visited
+}
+
+public final class SimpleGraph {
+
+    public let totalVertices: Int
+    public var vertices: [[Int]] = []
+
+    public init(_ totalVertices: Int) {
+        self.totalVertices = totalVertices
+        (0..<totalVertices).forEach { _ in vertices.append([]) }
+    }
+
+    public func addEdge(_ source: Int, _ destination: Int) { vertices[source].append(destination) }
+}
