@@ -51,6 +51,27 @@ extension Graph {
             : addUnDirectionEdge(between: edge1, and: edge2, weight: weight)
     }
 
+    func breadthFirstSearch(from source: Vertex<Element>)
+          -> [Vertex<Element>] where Element: Hashable {
+
+        var queue = [Vertex<Element>]()
+        var enqueued: Set<Vertex<Element>> = []
+        var visited: [Vertex<Element>] = []
+        queue.append(source)
+        var maxItems = 0
+
+        while !queue.isEmpty {
+            maxItems = max(queue.count, maxItems)
+            let vertex = queue.removeFirst()
+            enqueued.insert(vertex)
+            visited.append(vertex)
+            edges(from: vertex).forEach { queue.append(  $0.destination ) }
+        }
+
+        return visited
+      }
+
+
 }
 
 /// **Adjacency List**

@@ -23,5 +23,6 @@
         <page name='FindCommonChar'/>
         <page name='maxProfit'/>
         <page name='Mutual Freinds'/>
+        <page name='DisconnectedUndirectedGraph'/>
     </pages>
 </playground>
