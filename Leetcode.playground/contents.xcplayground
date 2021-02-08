@@ -27,5 +27,7 @@
         <page name='DisconnectedDirectedGraph'/>
         <page name='DetectCycleDirectedGraph'/>
         <page name='DetectCycleUnDirectGraph'/>
+        <page name='CourseSchedule1'/>
+        <page name='CourseSchedule2'/>
     </pages>
 </playground>

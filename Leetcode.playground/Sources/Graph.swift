@@ -244,11 +244,15 @@ public final class SimpleGraph {
 
     public let totalVertices: Int
     public var vertices: [[Int]] = []
+    public var indeg = [Int: Int]()
 
     public init(_ totalVertices: Int) {
         self.totalVertices = totalVertices
         (0..<totalVertices).forEach { _ in vertices.append([]) }
     }
 
-    public func addEdge(_ source: Int, _ destination: Int) { vertices[source].append(destination) }
+    public func addEdge(_ source: Int, _ destination: Int) {
+        vertices[source].append(destination)
+        indeg[destination] = (indeg[destination] ?? 0) + 1
+    }
 }
