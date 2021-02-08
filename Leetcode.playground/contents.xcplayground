@@ -25,5 +25,7 @@
         <page name='Mutual Freinds'/>
         <page name='DisconnectedUndirectedGraph'/>
         <page name='DisconnectedDirectedGraph'/>
+        <page name='DetectCycleDirectedGraph'/>
+        <page name='DetectCycleUnDirectGraph'/>
     </pages>
 </playground>
