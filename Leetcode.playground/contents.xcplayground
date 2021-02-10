@@ -29,5 +29,8 @@
         <page name='DetectCycleUnDirectGraph'/>
         <page name='CourseSchedule1'/>
         <page name='CourseSchedule2'/>
+        <page name='SoftwareInstallationProblem'/>
+        <page name='routesbetweentwonodes'/>
+        <page name='NumberOfIslands'/>
     </pages>
 </playground>
