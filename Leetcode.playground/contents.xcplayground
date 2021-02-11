@@ -22,15 +22,17 @@
         <page name='MinStack'/>
         <page name='FindCommonChar'/>
         <page name='maxProfit'/>
+        <page name='RegionCutBySlashes'/>
+        <page name='FindJudge'/>
+        <page name='CourseSchedule1'/>
+        <page name='CourseSchedule2'/>
         <page name='Mutual Freinds'/>
         <page name='DisconnectedUndirectedGraph'/>
         <page name='DisconnectedDirectedGraph'/>
         <page name='DetectCycleDirectedGraph'/>
         <page name='DetectCycleUnDirectGraph'/>
-        <page name='CourseSchedule1'/>
-        <page name='CourseSchedule2'/>
         <page name='SoftwareInstallationProblem'/>
-        <page name='routesbetweentwonodes'/>
         <page name='NumberOfIslands'/>
+        <page name='RoutesBetweenTwoNodes'/>
     </pages>
 </playground>
