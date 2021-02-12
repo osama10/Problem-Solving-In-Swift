@@ -1,7 +1,7 @@
 
 import Foundation
 
-/// Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
+/// Given a directed graph, design an algorithm to find out whether there is a route between two nodes. https://www.geeksforgeeks.org/find-if-there-is-a-path-between-two-vertices-in-a-given-graph/
 
 func routeBetweenTwoNodes(graph: SimpleGraph, node1: Int, node2: Int) -> Bool {
 

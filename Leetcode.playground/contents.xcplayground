@@ -26,6 +26,7 @@
         <page name='FindJudge'/>
         <page name='CourseSchedule1'/>
         <page name='CourseSchedule2'/>
+        <page name='ClimbingStairs'/>
         <page name='Mutual Freinds'/>
         <page name='DisconnectedUndirectedGraph'/>
         <page name='DisconnectedDirectedGraph'/>

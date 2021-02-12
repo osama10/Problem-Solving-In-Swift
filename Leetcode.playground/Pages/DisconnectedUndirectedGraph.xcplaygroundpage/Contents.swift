@@ -1,6 +1,6 @@
 import Foundation
 
-/// Not Leetcode.
+/// https://algorithms.tutorialhorizon.com/check-if-given-undirected-graph-is-connected-or-not/
 func isConnectedBFS(_ graph: [[Int]]) -> Bool {
     if graph.isEmpty { return true }
     let vertices = bfs(graph, 0)

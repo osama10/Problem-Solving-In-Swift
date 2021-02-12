@@ -1,5 +1,6 @@
 import Foundation
 
+/// https://www.techiedelight.com/check-given-graph-strongly-connected-not/#:~:text=A%20simple%20solution%20would%20be,the%20graph%20is%20strongly%20connected.
 
 func isConnectedDFS(_ graph: [[Int]]) -> Bool {
     if graph.isEmpty { return true }

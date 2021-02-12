@@ -1,6 +1,6 @@
 import Foundation
 
-
+/// https://algorithms.tutorialhorizon.com/graph-detect-cycle-in-a-directed-graph/
 func hasCycle(_ graph: SimpleGraph) -> Bool {
     if graph.totalVertices == 0 { return false }
     var enqued = Set<Int>()
