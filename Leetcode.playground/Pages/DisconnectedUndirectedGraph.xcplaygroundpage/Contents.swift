@@ -18,3 +18,16 @@ func isConnectedDFS(_ graph: [[Int]]) -> Bool {
 
 isConnectedDFS([[1], [0,3],[3],[1,2,4], [3]])
 isConnectedDFS([[1],[0,3],[3],[1,2], []])
+
+func checkIfConnected(_ graph: [[Int]]) -> Bool {
+    if graph.isEmpty { return true }
+    let allVisitedNodes = dfs(graph, 0)
+    return allVisitedNodes.count == graph.count
+}
+
+
+isConnectedDFS([[1], [0,3],[3],[1,2,4], [3]])
+checkIfConnected([[1], [0,3],[3],[1,2,4], [3]])
+
+isConnectedDFS([[1],[0,3],[3],[1,2], []])
+checkIfConnected([[1],[0,3],[3],[1,2], []])

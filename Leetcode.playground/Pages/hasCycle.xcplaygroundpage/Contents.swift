@@ -5,16 +5,13 @@ import Foundation
 // 141
 func hasCycle(_ head: ListNode?) -> Bool {
     if head == nil || head?.next == nil { return false }
-
-    var slow = head
-    var fast = head?.next?.next
-
-    while fast != nil {
-        if slow === fast { return true }
-        slow = slow?.next
+    var fast = head, slow = head
+    while fast != nil  {
         fast = fast?.next?.next
+        slow = slow?.next
+        if fast === slow { return true }
+
     }
-
     return false
-
 }
+

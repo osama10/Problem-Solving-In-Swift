@@ -5,22 +5,41 @@ import Foundation
 // 326
 
 
-func isPowerOfThree(_ n: Int) -> Bool {
-    if n == 1 { return true }
-    if n < 3 { return false }
-
-    var value = n
-    while value != 3 {
-        if value % 3 != 0 { return false }
-        value = value / 3
-    }
-
-    return true
+func isPowerOfThree( _ x: Int) -> Bool {
+    var val = x
+    while val%3 == 0 { val /= 3 }
+    return val == 1
 }
 
 isPowerOfThree(45)
 isPowerOfThree(27)
 isPowerOfThree(1)
 isPowerOfThree(2)
+isPowerOfThree(0)
 
-print(1%3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,25 +3,27 @@ import Foundation
 
 
 ///997 
+
 func findJudge(_ N: Int, _ trust: [[Int]]) -> Int {
-    var candidates = Set(Array(1...N))
-    var trusted = [Int:Int]()
-    for t in trust{
-         let a = t[0]
-         let b = t[1]
-        candidates.remove(a)
-         trusted[b, default: 0] += 1
-     }
 
-     for candidate in candidates{
-         if trusted[candidate, default: 0] == N-1{
-             return candidate
-         }
-     }
+    var candidates = (1...N).reduce(into: Set<Int>()) { (set, val) in set.insert(val) }
+    var trustCount = [Int: Int]()
 
-     return -1
+    trust.forEach { (dependency) in
+        let personWhoTrust = dependency[0]
+        let personBeingTrusted = dependency[1]
+        candidates.remove(personWhoTrust)
+        trustCount[personBeingTrusted, default: 0] += 1
+    }
+
+    if candidates.count > 1 { return -1 }
+    for candidate in candidates {
+        if trustCount[candidate, default: 0] == N - 1  { return candidate }
+    }
+
+    return -1
+
 }
-
 
 findJudge(2, [[1,2]])
 findJudge(3, [[1,3],[2,3]])

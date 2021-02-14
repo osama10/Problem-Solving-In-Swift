@@ -8,10 +8,10 @@
         <page name='hasCycle'/>
         <page name='IntersectionofTwoLinkedLists'/>
         <page name='isPalindrome'/>
-        <page name='CountandSay'/>
         <page name='isSymmetric'/>
-        <page name='LongestCommonPrefix'/>
         <page name='MergeTwoBinaryTrees'/>
+        <page name='CountandSay'/>
+        <page name='LongestCommonPrefix'/>
         <page name='ValidParanthesis'/>
         <page name='MergeTwoSortedList'/>
         <page name='missingnumber'/>
@@ -22,8 +22,8 @@
         <page name='MinStack'/>
         <page name='FindCommonChar'/>
         <page name='maxProfit'/>
-        <page name='RegionCutBySlashes'/>
         <page name='FindJudge'/>
+        <page name='RegionCutBySlashes'/>
         <page name='CourseSchedule1'/>
         <page name='CourseSchedule2'/>
         <page name='ClimbingStairs'/>
@@ -35,5 +35,6 @@
         <page name='SoftwareInstallationProblem'/>
         <page name='NumberOfIslands'/>
         <page name='RoutesBetweenTwoNodes'/>
+        <page name='ShortesPathBetweenTwoNode'/>
     </pages>
 </playground>

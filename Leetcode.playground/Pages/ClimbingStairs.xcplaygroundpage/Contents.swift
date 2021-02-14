@@ -17,4 +17,4 @@ func numberOfWays(_ n: Int, _ memo: inout [Int: Int]) ->Int{
     return memo[n]!
 
 }
-}
+
