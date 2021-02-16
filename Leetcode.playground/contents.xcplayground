@@ -10,6 +10,8 @@
         <page name='isPalindrome'/>
         <page name='isSymmetric'/>
         <page name='MergeTwoBinaryTrees'/>
+        <page name='MinStack'/>
+        <page name='firstUniqueChar'/>
         <page name='CountandSay'/>
         <page name='LongestCommonPrefix'/>
         <page name='ValidParanthesis'/>
@@ -17,9 +19,7 @@
         <page name='missingnumber'/>
         <page name='validPalindrome'/>
         <page name='IntersectionOfTwoArray'/>
-        <page name='firstUniqueChar'/>
         <page name='trailingZeros'/>
-        <page name='MinStack'/>
         <page name='FindCommonChar'/>
         <page name='maxProfit'/>
         <page name='FindJudge'/>
@@ -36,5 +36,9 @@
         <page name='NumberOfIslands'/>
         <page name='RoutesBetweenTwoNodes'/>
         <page name='ShortesPathBetweenTwoNode'/>
+        <page name='UnionFind'/>
+        <page name='DetectCycleByUnionFind'/>
+        <page name='SameCountries'/>
+        <page name='MinimumHeightTree'/>
     </pages>
 </playground>
