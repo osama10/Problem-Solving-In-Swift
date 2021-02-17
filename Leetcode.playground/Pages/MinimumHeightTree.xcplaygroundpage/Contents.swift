@@ -1,6 +1,8 @@
 import Foundation
 
 
+/// 310
+/// https://leetcode.com/problems/minimum-height-trees/discuss/76055/Share-some-thoughts
 
 //func findMinHeightTrees(_ n: Int, _ edges: [[Int]]) -> [Int] {
 //
@@ -123,3 +125,13 @@ func findMinHeightTrees(_ n: Int, _ edges: [[Int]]) -> [Int] {
 findMinHeightTrees(6, [[3,0],[3,1],[3,2],[3,4],[5,4]])
 
 
+func findSmallestSetOfVertices(_ n: Int, _ edges: [[Int]]) -> [Int] {
+    var candidates = Set(0..<n)
+
+    for edge in edges {
+        candidates.remove(edge[1])
+    }
+    return Array(candidates)
+}
+
+findSmallestSetOfVertices(6, [[0,1],[0,2],[2,5],[3,4],[4,2]])
