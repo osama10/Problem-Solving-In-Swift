@@ -27,6 +27,7 @@
         <page name='CourseSchedule1'/>
         <page name='CourseSchedule2'/>
         <page name='MinimumHeightTree'/>
+        <page name='FindSmallestSetOfVertices'/>
         <page name='ClimbingStairs'/>
         <page name='Mutual Freinds'/>
         <page name='DisconnectedUndirectedGraph'/>
@@ -40,6 +41,5 @@
         <page name='UnionFind'/>
         <page name='DetectCycleByUnionFind'/>
         <page name='SameCountries'/>
-        <page name='FindSmallestSetOfVertices'/>
     </pages>
 </playground>
