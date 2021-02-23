@@ -22,12 +22,16 @@
         <page name='trailingZeros'/>
         <page name='FindCommonChar'/>
         <page name='maxProfit'/>
+        <page name='SortIntegerByThePowerValue'/>
         <page name='FindJudge'/>
         <page name='RegionCutBySlashes'/>
         <page name='CourseSchedule1'/>
         <page name='CourseSchedule2'/>
         <page name='MinimumHeightTree'/>
+        <page name='AllPathFromSourceToTarget'/>
         <page name='FindSmallestSetOfVertices'/>
+        <page name='CanVisitAllRoom'/>
+        <page name='findRedundantConnection'/>
         <page name='ClimbingStairs'/>
         <page name='Mutual Freinds'/>
         <page name='DisconnectedUndirectedGraph'/>
@@ -41,5 +45,7 @@
         <page name='UnionFind'/>
         <page name='DetectCycleByUnionFind'/>
         <page name='SameCountries'/>
+        <page name='Permutation'/>
+        <page name='inorderTraversal'/>
     </pages>
 </playground>
