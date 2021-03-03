@@ -47,5 +47,21 @@
         <page name='SameCountries'/>
         <page name='Permutation'/>
         <page name='inorderTraversal'/>
+        <page name='CountServers'/>
+        <page name='PathSum3'/>
+        <page name='TopKFrequent'/>
+        <page name='MinIndexSumOfTwoList'/>
+        <page name='RandomPickWeigth'/>
+        <page name='ReconstructItenary'/>
+        <page name='MeetingRoom2'/>
+        <page name='MergeIntervals'/>
+        <page name='IsomorphichString'/>
+        <page name='WordPattern'/>
+        <page name='InsertDeleteGetRandom'/>
+        <page name='Combination'/>
+        <page name='IntersectionOfTwoArrays'/>
+        <page name='CombinationSum'/>
+        <page name='lengthOfLongestSubstring'/>
+        <page name='GenerateParenthesis'/>
     </pages>
 </playground>
