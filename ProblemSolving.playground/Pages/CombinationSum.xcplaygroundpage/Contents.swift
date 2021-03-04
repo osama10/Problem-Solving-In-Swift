@@ -1,32 +1,28 @@
 import Foundation
 
 /// 39
-func backtrack( _ index: Int, _ sum: inout Int, _ combination: inout [Int], _ allCombinations: inout[[Int]],_ candidates: [Int], _ targetSum: Int) {
+func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+    var combination = [Int]()
+    var allCombinations = [[Int]]()
+    backtrack(candidates, target, 0, &allCombinations, combination: &combination, sum: 0)
+    return allCombinations
+}
 
-    if sum == targetSum {
+
+func backtrack(_ candidates: [Int], _ target: Int, _ start: Int, _ allCombinations: inout [[Int]], combination: inout [Int], sum: Int) {
+    if sum == target {
         allCombinations.append(combination)
         return
     }
 
-    if sum > targetSum { return }
+    if sum > target { return }
 
-    for nextIndex in index..<candidates.count {
-        combination.append(candidates[nextIndex])
-        sum += candidates[nextIndex]
-        backtrack(nextIndex, &sum, &combination, &allCombinations, candidates, targetSum)
-        sum -= candidates[nextIndex]
+    for index in start..<candidates.count {
+        combination.append(candidates[index])
+        backtrack(candidates, target, index, &allCombinations, combination: &combination, sum: sum + candidates[index])
         combination.removeLast()
     }
-
 }
 
-func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
-    var allCombinations: [[Int]] = []
-    var combination: [Int] = []
-    var sum  = 0
-    backtrack(0, &sum, &combination, &allCombinations, candidates, target)
-    return allCombinations
-}
-
+combinationSum([2,3,5], 5)
 combinationSum([1], 2)
-

@@ -45,4 +45,3 @@ func isIsomorphic(_ s: String, _ t: String) -> Bool {
 
 isIsomorphic("aa", "ab")
 
-

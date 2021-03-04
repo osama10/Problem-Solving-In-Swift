@@ -63,5 +63,8 @@
         <page name='CombinationSum'/>
         <page name='lengthOfLongestSubstring'/>
         <page name='GenerateParenthesis'/>
+        <page name='GroupAnagrams'/>
+        <page name='FilterRestaurant'/>
+        <page name='ValidGraph'/>
     </pages>
 </playground>
