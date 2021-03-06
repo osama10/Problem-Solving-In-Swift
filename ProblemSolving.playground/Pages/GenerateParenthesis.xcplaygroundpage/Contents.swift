@@ -1,6 +1,7 @@
 import Foundation
 
 /// 22
+// O((4^n)/sqrt(n)
 func generateParethesis (n:Int) ->[String] {
     if n == 0 { return [] }
     var allCombinations = [String]()

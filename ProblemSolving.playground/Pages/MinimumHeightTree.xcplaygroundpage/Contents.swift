@@ -52,18 +52,6 @@ func findMinHeightTrees(_ n: Int, _ edges: [[Int]]) -> [Int] {
 findMinHeightTrees(6, [[3,0],[3,1],[3,2],[3,4],[5,4]])
 
 
-func findSmallestSetOfVertices(_ n: Int, _ edges: [[Int]]) -> [Int] {
-    var candidates = Set(0..<n)
-
-    for edge in edges {
-        candidates.remove(edge[1])
-    }
-    return Array(candidates)
-}
-
-findSmallestSetOfVertices(6, [[0,1],[0,2],[2,5],[3,4],[4,2]])
-
-
 func findMinHeightTrees1(_ n: Int, _ edges: [[Int]]) -> [Int] {
     if n <= 2 { return (0..<n).map { $0 } }
     var graph = Array(repeating: Set<Int>(), count: n)

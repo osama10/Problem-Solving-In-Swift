@@ -2,6 +2,7 @@ import Foundation
 
 /// 784
 
+/// O 2^n
 func letterCasePermutation(_ S: String) -> [String] {
     var allPermutations = [String]()
     let charArr = Array(S)
@@ -11,6 +12,7 @@ func letterCasePermutation(_ S: String) -> [String] {
 
 
 func backtrack(_ index: Int, _ string: String, _ allPermutations : inout [String],  S: Array<String.Element>) {
+    print("a")
     if  string.count == S.count {
         allPermutations.append(string)
         return
@@ -23,6 +25,6 @@ func backtrack(_ index: Int, _ string: String, _ allPermutations : inout [String
 
 }
 
-letterCasePermutation("C")
+letterCasePermutation("CA")
 
 

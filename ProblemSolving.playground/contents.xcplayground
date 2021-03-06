@@ -66,5 +66,11 @@
         <page name='GroupAnagrams'/>
         <page name='FilterRestaurant'/>
         <page name='ValidGraph'/>
+        <page name='LetterCasePermutation'/>
+        <page name='DecodeString'/>
+        <page name='ReverseWordInAString'/>
+        <page name='TwoSums'/>
+        <page name='CompressString'/>
+        <page name='CheckIfAll1KDistApart'/>
     </pages>
 </playground>
