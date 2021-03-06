@@ -72,5 +72,6 @@
         <page name='TwoSums'/>
         <page name='CompressString'/>
         <page name='CheckIfAll1KDistApart'/>
+        <page name='FindLeavesOfBinaryTree'/>
     </pages>
 </playground>
