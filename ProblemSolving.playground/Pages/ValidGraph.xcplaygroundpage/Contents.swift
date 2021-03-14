@@ -41,4 +41,3 @@ func validGraph(_ n: Int, _ edges: [[Int]]) -> Bool {
 
 validGraph(5, [[0,1], [1,2], [2,3], [1,3], [1,4]])
 
-

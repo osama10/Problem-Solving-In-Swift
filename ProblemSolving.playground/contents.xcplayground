@@ -73,5 +73,14 @@
         <page name='CompressString'/>
         <page name='CheckIfAll1KDistApart'/>
         <page name='FindLeavesOfBinaryTree'/>
+        <page name='MergeTwoSortedLists'/>
+        <page name='RomanToInt'/>
+        <page name='IntToRoman'/>
+        <page name='CountOfSubstringHavingDistinctChar'/>
+        <page name='ImplementTrie'/>
+        <page name='replacewords'/>
+        <page name='ImplementMagicDict'/>
+        <page name='UniqueRowInMatrix'/>
+        <page name='CountDistinctSubstrings'/>
     </pages>
 </playground>

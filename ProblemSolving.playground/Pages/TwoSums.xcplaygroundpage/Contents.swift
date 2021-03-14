@@ -1,9 +1,4 @@
-//: [Previous](@previous)
-
 import Foundation
-
-var str = "Hello, playground"
-
 
 /// 1 NormalTwo Sum
 
@@ -18,6 +13,7 @@ for (index, value) in nums.enumerated() {
 }
 
 return []
+
 }
 
 /// 167 Two sum when sorted
@@ -65,3 +61,62 @@ func findTarget(_ root: TreeNode?, _ k: Int) -> Bool {
         inorderTraversal(root, &sortedArray)
         return checkTwoSumOnSortedArray(sortedArray, k)
 }
+
+
+/// 1099 . Two Sum Less Than K (https://leetcode.com/problems/two-sum-less-than-k/): Given an array A of integers and integer K, return the maximum S such that there exists i < j with A[i] + A[j] = S and S < K. If no i, j exist satisfying this equation, return -1.
+
+func twoSumLessThanK(_ arr: [Int], _ k: Int) -> Int {
+    let arr = arr.sorted()
+    var left = 0
+    var right = arr.count - 1
+
+    var maxSum = -1
+
+    while left < right {
+        let sum = arr[left] + arr[right]
+        if sum < k {
+            maxSum = max(sum, maxSum)
+            left += 1
+        } else { right -= 1 }
+    }
+
+    return maxSum
+}
+
+twoSumLessThanK([ 20, 10, 30, 100, 110 ], 85)
+twoSumLessThanK([ 20, 10, 30, 100, 110 ], 20)
+
+
+
+func groupAnagrams(_ strs: [String]) -> [[String]] {
+    var anamgramList = [String: [String]]()
+    for str in strs {
+        let sortedStr = String(str.sorted())
+        anamgramList[sortedStr, default: [String]()].append(str)
+    }
+    return anamgramList.values.map{ $0 }
+}
+
+func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+    if s.isEmpty { return true }
+    let sArray = Array(s)
+    let set = Set<String>(wordDict)
+    var result = ""
+    var segment = String(sArray[0])
+    var alreadyApeared = Set<String>()
+
+    for (ind, char) in sArray.enumerated() {
+        if ind != 0 { segment.append(char) }
+        if set.contains(segment), !alreadyApeared.contains(segment) {
+            alreadyApeared.insert(segment)
+            result.append(segment)
+            segment = ""
+
+        }
+    }
+
+    return result == s
+}
+
+
+wordBreak("aaaaaaa", ["aaaa","aaa"])
