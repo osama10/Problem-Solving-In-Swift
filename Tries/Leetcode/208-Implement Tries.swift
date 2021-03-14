@@ -1,6 +1,3 @@
-import Foundation
-
-/// 208
 class TrieNode {
 
     var value: Character?

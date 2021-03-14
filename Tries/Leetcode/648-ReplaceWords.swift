@@ -1,5 +1,6 @@
 
 import Foundation
+
 /// 648
 func replaceWords(_ dictionary: [String], _ sentence: String) -> String {
     var splitSentence = sentence
@@ -89,3 +90,4 @@ func replaceWordsTrie(_ dictionary: [String], _ sentence: String) -> String {
 //replaceWordsTrie(["a","b","c"], "aadsfasf absbs bbab cadsfafs") == "a a b c"
 //replaceWordsTrie(["catt","cat","bat","rat"], "the cattle was rattled by the battery") == "the cat was rat by the bat"
 //replaceWordsTrie(["ac","ab"], "it is abnormal that this solution is accepted") == "it is ab that this solution is ac"
+

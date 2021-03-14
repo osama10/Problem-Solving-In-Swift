@@ -59,6 +59,3 @@ func countNodes(_ root: TrieNode, _ totalNodes: inout Int) {
 countDistinctSubstring("ab")
 countDistinctSubstring("ababa")
 countDistinctSubstring("banana")
-
-
-
