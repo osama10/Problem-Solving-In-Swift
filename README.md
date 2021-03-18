@@ -8,7 +8,7 @@ Programing questions solution in swift
     - All occurences of substring 
     - Finding all distinct substring
 
-## DP
+## [DP](https://github.com/osama10/Problem-Solving-In-Swift/tree/main/DP)
 A technique to solve optimization problem in breaking down in to overlapping sub problems and finding the solution using those problems. Optimization problems can be of enumerations ( climbing stairs ), max min profit ( stock selling ) or yes or no
 
 A problem is DP if 
