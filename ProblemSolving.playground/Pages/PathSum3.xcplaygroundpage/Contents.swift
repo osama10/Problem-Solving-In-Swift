@@ -5,11 +5,12 @@ import Foundation
 
 func pathSum(_ root: TreeNode?, _ sum: Int) -> Int {
     var totalPaths = 0
-    depthFirstTraversal(root, &totalPaths, parentSum: [] , sum)
+    var parentSum = [TreeNode]()
+    depthFirstTraversal(root, &totalPaths, parentSum:  &parentSum , sum)
     return totalPaths
 }
 
-func depthFirstTraversal(_ tree: TreeNode?, _ totalPaths: inout Int, parentSum: [TreeNode], _ targetSum:  Int) {
+func depthFirstTraversal(_ tree: TreeNode?, _ totalPaths: inout Int, parentSum: inout [TreeNode], _ targetSum:  Int) {
     guard let tree = tree else { return }
     var parentSum = parentSum
 
@@ -24,9 +25,10 @@ func depthFirstTraversal(_ tree: TreeNode?, _ totalPaths: inout Int, parentSum: 
 
     parentSum.append(tree)
 
-    depthFirstTraversal(tree.left, &totalPaths, parentSum: parentSum, targetSum)
-    depthFirstTraversal(tree.right, &totalPaths, parentSum: parentSum, targetSum)
+    depthFirstTraversal(tree.left, &totalPaths, parentSum: &parentSum, targetSum)
+    depthFirstTraversal(tree.right, &totalPaths, parentSum: &parentSum, targetSum)
 
+    parentSum.removeLast()
 
 }
 

@@ -82,5 +82,8 @@
         <page name='ImplementMagicDict'/>
         <page name='UniqueRowInMatrix'/>
         <page name='CountDistinctSubstrings'/>
+        <page name='longestprefixmatching'/>
+        <page name='shortestUniquePrefix'/>
+        <page name='WordBreak'/>
     </pages>
 </playground>

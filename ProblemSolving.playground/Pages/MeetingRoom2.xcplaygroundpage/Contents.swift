@@ -26,5 +26,3 @@ minMeetingRoom([[0, 30],[5, 10],[15, 20]])
 minMeetingRoom([[0, 1],[2, 3],[4, 5]])
 minMeetingRoom([[0, 60],[20, 30],[18, 25]])
 minMeetingRoom([])
-
-

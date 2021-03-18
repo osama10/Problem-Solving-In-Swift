@@ -1,7 +1,6 @@
 import Foundation
 
 /// 692
-
 func topKFrequent(_ words: [String], _ k: Int) -> [String] {
     let wordFrequency = words.reduce(into: [String: Int]()) { (map, word) in map[word, default: 0 ] += 1 }
     var priorityQueue = Heap <(String, Int)>{ $0.1 < $1.1 || ($0.1 == $1.1 && $0.0 > $1.0) }

@@ -5,19 +5,13 @@ import UIKit
 
 /// **  Images can be found in resources folder  **
 
-struct Point: Hashable {
-    let x: Int
-    let y: Int
-}
-
 func solution(_ graph: inout [[Int]]) -> Int {
     var totalCountries = 0
-    var visited = Set<Point>()
+    var visited = Array(repeating: Array(repeating: false, count: graph[0].count), count: graph.count)
 
     for row in 0..<graph.count {
         for col in 0..<graph[row].count {
-            let point = Point(x: row, y: col)
-            if !visited.contains(point) {
+            if !visited[row][col] {
                 dfs(&graph, row, col, graph[row][col], &visited)
                 totalCountries += 1
             }
@@ -26,15 +20,14 @@ func solution(_ graph: inout [[Int]]) -> Int {
     return totalCountries
 }
 
-func dfs(_ graph: inout [[Int]], _ row: Int, _ col: Int, _ countryCode: Int, _ visited: inout Set<Point>) {
+func dfs(_ graph: inout [[Int]], _ row: Int, _ col: Int, _ countryCode: Int, _ visited: inout [[Bool]]) {
 
     let totalRows = graph.count
     let totalCol = graph[0].count
-    let point = Point(x: row, y: col)
 
-    if row < 0 || col < 0 || row >= totalRows || col >= totalCol  || graph[row][col] != countryCode || visited.contains(point) { return }
+    if row < 0 || col < 0 || row >= totalRows || col >= totalCol  || graph[row][col] != countryCode || visited[row][col] { return }
 
-    visited.insert(point)
+    visited[row][col] = true
 
     dfs(&graph, row - 1, col, graph[row][col], &visited)
     dfs(&graph, row + 1, col, graph[row][col], &visited)
@@ -55,4 +48,3 @@ var graph = [
 
 solution(&graph)
 
-print("Alles gut")

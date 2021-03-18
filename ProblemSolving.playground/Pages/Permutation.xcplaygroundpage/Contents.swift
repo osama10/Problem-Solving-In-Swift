@@ -1,5 +1,6 @@
 import Foundation
 
+/// 46
 func permute(_ nums: [Int]) -> [[Int]] {
     var graph = nums.reduce(into: [Int: Set<Int>]()) { (graph, node) in graph[node] = Set<Int>() }
     for  node in nums {
@@ -24,16 +25,8 @@ func dfs( _ graph: [Int: Set<Int>], _ path: inout [Int], _ totalPaths: inout [[I
     visted.insert(node)
     path.append(node)
 
-    if path.count == graph.count {
-        totalPaths.append(path)
-        visted.remove(node)
-        path.popLast()
-        return
-    }
-
-    for neighbor in graph[node]! {
-        if !visted.contains(neighbor) { dfs(graph, &path, &totalPaths, neighbor, visted: &visted) }
-    }
+    if path.count == graph.count { totalPaths.append(path) }
+    else { for neighbor in graph[node]! { if !visted.contains(neighbor) { dfs(graph, &path, &totalPaths, neighbor, visted: &visted) }} }
 
     visted.remove(node)
     path.popLast()
@@ -41,3 +34,6 @@ func dfs( _ graph: [Int: Set<Int>], _ path: inout [Int], _ totalPaths: inout [[I
 
 
 permute([1])
+
+
+

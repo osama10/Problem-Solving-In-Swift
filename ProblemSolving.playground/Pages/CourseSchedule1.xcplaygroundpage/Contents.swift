@@ -35,3 +35,38 @@ func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
 canFinish(2, [[1,0],[0,1]])
 canFinish(5, [[1,4],[2,4],[3,1],[3,2]])
 canFinish(2, [[1,0]])
+
+
+func canFinish1(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
+    var graph = Array(repeating: [Int](), count: numCourses)
+    var indegree = [Int: Int]()
+    var stack = [Int]()
+    var result = [Int]()
+
+    for preReq in prerequisites {
+        graph[preReq[1]].append(preReq[1])
+        indegree[preReq[0], default: 0] += 1
+    }
+
+    if indegree.count == numCourses { return false }
+    (0..<numCourses).forEach { if indegree[$0] == nil { stack.append($0)} }
+
+    while !stack.isEmpty {
+        let course = stack.removeLast()
+        result.append(course)
+
+        for dependentCourse in graph[course] {
+            if let degree = indegree[dependentCourse] {
+                if degree - 1 == 0 {
+                    indegree[dependentCourse] = nil
+                    stack.append(dependentCourse)
+                } else {
+                    indegree[dependentCourse] = degree - 1
+                }
+            }
+        }
+    }
+
+    return result.count == numCourses
+}
+

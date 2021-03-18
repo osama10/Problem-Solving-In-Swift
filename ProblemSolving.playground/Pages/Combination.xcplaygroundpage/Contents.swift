@@ -1,26 +1,30 @@
 import Foundation
-
-func backTrack(_ start: Int, _ combination: inout [Int], _ allCombinations: inout[[Int]], _ k: Int, _ n: Int) {
-    if combination.count == k {
-        allCombinations.append(combination)
-        return
-    }
-
-    if start > n { return }
-
-    for number in start...n {
-        combination.append(number)
-        backTrack(number + 1, &combination, &allCombinations, k, n)
-        combination.removeLast()
-    }
-}
-
+// 77
 func combine(_ n: Int, _ k: Int) -> [[Int]] {
-    var allCombinations: [[Int]] = []
+    var result: [[Int]] = []
     var combination:  [Int] = []
-    backTrack(1, &combination, &allCombinations, k, n)
-    return allCombinations
+    for num in 1...n {
+        backtrack(n, k, num: num, combination: &combination, result: &result)
+
+    }
+    return result
 }
 
 
-combine(4, 4)
+func backtrack(_ n: Int, _ k : Int, num: Int, combination: inout [Int], result: inout [[Int]]) {
+    combination.append(num)
+    if combination.count == k {
+        result.append(combination)
+    } else {
+        if num + 1 <= n {
+            for next in num+1...n {
+                backtrack(n, k, num: next, combination: &combination, result: &result)
+            }
+        }
+
+    }
+
+    combination.removeLast()
+}
+
+combine(4, 2)
