@@ -1,4 +1,4 @@
-// 416
+// 416 https://www.geeksforgeeks.org/partition-problem-dp-18/
   func canPartition(_ nums: [Int]) -> Bool {
     let sum = nums.reduce(0, +)
     if sum%2 != 0 { return false }
