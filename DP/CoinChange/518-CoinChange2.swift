@@ -5,23 +5,19 @@ func change(_ amount: Int, _ coins: [Int]) -> Int  {
 }
 
 
-func coinChangeUtil(_ coin: [Int], _ amount: Int, _ coinCount: Int, _ cache: inout [[Int]]) -> Int {
+func coinChangeUtil(_ coin: [Int], _ amount: Int, _ index: Int, _ cache: inout [[Int]]) -> Int {
 
     if amount == 0 { return 1 }
 
     if amount < 0 { return 0 }
 
-    if coinCount <= 0 && amount > 0 { return 0 }
+    if index <= 0 && amount > 0 { return 0 }
 
-    if cache[amount][coinCount] != -1 { return cache[amount][coinCount] }
+    if cache[amount][index] != -1 { return cache[amount][index] }
 
-    let x = coinChangeUtil(coin, amount, coinCount - 1, &cache)
+    cache[amount][index] = coinChangeUtil(coin, amount, index - 1, &cache) + coinChangeUtil(coin, amount - coin[index - 1], index, &cache)
 
-    let y = coinChangeUtil(coin, amount - coin[coinCount - 1], coinCount, &cache)
-
-    cache[amount][coinCount] = x + y
-
-    return cache[amount][coinCount]
+    return cache[amount][index]
 }
 
-change([10], 10)
+change(10, [10])
