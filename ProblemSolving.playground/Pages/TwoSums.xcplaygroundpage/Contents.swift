@@ -97,26 +97,3 @@ func groupAnagrams(_ strs: [String]) -> [[String]] {
     return anamgramList.values.map{ $0 }
 }
 
-func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
-    if s.isEmpty { return true }
-    let sArray = Array(s)
-    let set = Set<String>(wordDict)
-    var result = ""
-    var segment = String(sArray[0])
-    var alreadyApeared = Set<String>()
-
-    for (ind, char) in sArray.enumerated() {
-        if ind != 0 { segment.append(char) }
-        if set.contains(segment), !alreadyApeared.contains(segment) {
-            alreadyApeared.insert(segment)
-            result.append(segment)
-            segment = ""
-
-        }
-    }
-
-    return result == s
-}
-
-
-wordBreak("aaaaaaa", ["aaaa","aaa"])
