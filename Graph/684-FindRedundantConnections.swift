@@ -13,8 +13,6 @@ func findRedundantConnection(_ edges: [[Int]]) -> [Int] {
         graph[edge[1]].append(edge[0])
     }
 
-    print(graph)
-
     return []
 }
 
