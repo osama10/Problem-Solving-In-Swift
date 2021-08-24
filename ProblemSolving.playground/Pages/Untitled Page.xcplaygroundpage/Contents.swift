@@ -150,26 +150,267 @@ import Foundation
 //
 //longestPalindrome("ac")
 
-/// 8.4 Power Set: Write a method to return all subsets of a set.
+///// 8.4 Power Set: Write a method to return all subsets of a set.
+//
+//func powerSet(arr: [Int]) -> [[Int]] {
+//    var comb = [Int]()
+//    var allComb = [[Int]]()
+//    generate(arr: arr, comb: &comb, allComb: &allComb, start: 0)
+//    return allComb
+//}
+//
+//
+//func generate(arr: [Int], comb: inout [Int], allComb: inout[[Int]], start: Int) {
+//    allComb.append(comb)
+//
+//    for next in start..<arr.count {
+//        comb.append(arr[next])
+//        generate(arr: arr, comb: &comb, allComb: &allComb, start: next + 1)
+//        comb.removeLast()
+//    }
+//
+//}
+//
+//powerSet(arr: [1, 2])
+//powerSet(arr: [1, 2, 3])
 
-func powerSet(arr: [Int]) -> [[Int]] {
-    var comb = [Int]()
-    var allComb = [[Int]]()
-    generate(arr: arr, comb: &comb, allComb: &allComb, start: 0)
-    return allComb
-}
+/// 4.1 Route Between Nodes: Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
+//
+//func hasRoute(_ source: Int, _ target: Int, graph: [[Int]]) -> Bool {
+//    var visited = Set<Int>()
+//    return depthFirstSearch(source, target, graph, &visited)
+//}
+//
+//func depthFirstSearch(_ current: Int, _ target: Int, _ graph: [[Int]], _ visited: inout Set<Int>) -> Bool {
+//    visited.insert(current)
+//
+//    if current == target { return true }
+//
+//    for neighbor in graph[current] {
+//        if !visited.contains(neighbor) && depthFirstSearch(neighbor, target, graph, &visited) {
+//            return true
+//        }
+//    }
+//
+//    visited.remove(current)
+//    return false
+//}
+//
+//let graph = [[1,2], [0], [3], [0], [5], [0]]
+//
+//
+//print(hasRoute(3, 1, graph: graph))
+
+/// 4.2 Minimal Tree: Given a sorted (increasing order) array with unique integer elements, write an algorithm to create a binary search tree with minimal height.
+
+//func createMinimalTree(_ sortedArray: [Int]) -> TreeNode? {
+//    if sortedArray.isEmpty { return nil }
+//    return createBST(0, sortedArray.count - 1, sortedArray)
+//}
+//
+//func createBST(_ lo: Int, _ hi: Int, _ array: [Int]) -> TreeNode? {
+//    guard lo <= hi else { return nil }
+//    let mid  = (lo + hi)/2
+//    let value = array[mid]
+//    let parent = TreeNode(value)
+//    parent.left = createBST(lo, mid - 1, array)
+//    parent.right = createBST(mid + 1, hi, array)
+//    return parent
+//}
+//
+//printLevelOrderTree(createMinimalTree([0,1,2,3,4,5]))
+//
+//func printLevelOrderTree(_ tree: TreeNode?) {
+//    var queue = [tree!]
+//    while !queue.isEmpty {
+//        var child = [TreeNode]()
+//        var level = [Int]()
+//        queue.forEach { parent in
+//            level.append(parent.val)
+//            if let left = parent.left { child.append(left)}
+//            if let right = parent.right { child.append(right)}
+//        }
+//        print(level)
+//        queue = child
+//    }
+//}
+
+/// 4.3 List of Depths: Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth (e.g., if you have a tree with depth D, you'll have D linked lists).
+//
+//func levelOrderTraversal(tree: TreeNode) -> [ListNode] {
+//    var queue = [TreeNode]()
+//    queue.append(tree)
+//    var result = [ListNode]()
+//
+//    while !queue.isEmpty {
+//        var child = [TreeNode]()
+//        var head: ListNode?
+//        var current: ListNode?
+//        queue.forEach { parent in
+//            if head == nil {
+//                head = ListNode(parent.val)
+//                current = head
+//            } else {
+//                current?.next = ListNode(parent.val)
+//                current = current?.next
+//            }
+//            if let left = parent.left { child.append(left)}
+//            if let right = parent.right { child.append(right)}
+//        }
+//        result.append(head!)
+//        queue = child
+//    }
+//
+//    return result
+//}
+//
+//func printList(listArr: [ListNode]) {
+//    listArr.forEach { list in
+//        var curr: ListNode? = list
+//        var levels = [Int]()
+//        while curr != nil {
+//            levels.append(curr!.val)
+//            curr = curr?.next
+//        }
+//        print(levels)
+//    }
+//}
+//
+//
+//let root = TreeNode(2)
+//let rootRight = TreeNode(4)
+//let rootLeft = TreeNode(0)
+//
+//root.left = rootLeft
+//
+//let child0 = TreeNode(-1)
+//let child1 = TreeNode(1)
+//let child2 = TreeNode(3)
+//let child3 = TreeNode(5)
+//
+//rootLeft.left = child0
+//rootLeft.right = child1
+//
+//
+//printList(listArr: levelOrderTraversal(tree: root))
 
 
-func generate(arr: [Int], comb: inout [Int], allComb: inout[[Int]], start: Int) {
-    allComb.append(comb)
+/// 4.4 Check Balanced: Implement a function to check if a binary tree is balanced. For the purposes of this question, a balanced tree is defined to be a tree such that the heights of the two subtrees of any node never differ by more than one.
+//
+//func isBalanced(root: TreeNode?) -> Int {
+//    if root == nil { return 0 }
+//
+//    let leftHeight = isBalanced(root: root?.left)
+//    if leftHeight == Int.min { return Int.min }
+//
+//    let rightHeight = isBalanced(root: root?.right)
+//    if rightHeight == Int.min { return Int.min }
+//
+//    if abs(leftHeight - rightHeight) > 1 { return Int.min }
+//
+//
+//    return max(rightHeight, leftHeight) + 1
+//}
+//
+//let root = TreeNode(2)
+//let rootRight = TreeNode(4)
+//let rootLeft = TreeNode(0)
+//
+//root.left = rootLeft
+//
+//let child0 = TreeNode(-1)
+//let child1 = TreeNode(1)
+//let child2 = TreeNode(3)
+//let child3 = TreeNode(5)
+//
+//rootLeft.left = child0
+//rootLeft.right = child1
+//
+//
+//print(isBalanced(root: root))
 
-    for next in start..<arr.count {
-        comb.append(arr[next])
-        generate(arr: arr, comb: &comb, allComb: &allComb, start: next + 1)
-        comb.removeLast()
-    }
 
-}
+/// 4.5 Validate BST: Implement a function to check if a binary tree is a binary search tree.
+//
+//func isValidBST(_ tree: TreeNode?) -> Bool {
+//
+//    var nodeArray = [Int]()
+//    inOrderTraversal(tree: tree, nodeArray: &nodeArray)
+//
+//    guard !nodeArray.isEmpty,
+//           nodeArray.count > 1
+//    else { return true }
+//
+//    for i in 1..<nodeArray.count {
+//        if nodeArray[i - 1] >= nodeArray[i] { return false }
+//    }
+//
+//    return true
+//}
+//
+//func inOrderTraversal(tree: TreeNode?, nodeArray: inout [Int]) {
+//    guard let tree = tree else { return }
+//    inOrderTraversal(tree: tree.left, nodeArray: &nodeArray)
+//    nodeArray.append(tree.val)
+//    inOrderTraversal(tree: tree.right, nodeArray: &nodeArray)
+//}
+//
+//func isValidBST(tree: TreeNode?) -> Bool {
+//    checkForValidBST(tree: tree, min: nil, max: nil)
+//}
+//
+//func checkForValidBST(tree: TreeNode?, min: Int?, max: Int?) -> Bool {
+//    guard let tree = tree else { return true }
+//
+//    if (min != nil && min! >= tree.val ) || (max != nil && max! <= tree.val ) { return false }
+//
+//    let isLeftTreeValid = checkForValidBST(tree: tree.left, min: min, max: tree.val)
+//    let isRightTreeValid = checkForValidBST(tree: tree.right, min: tree.val, max: max)
+//
+//    return isLeftTreeValid && isRightTreeValid
+//
+//}
 
-powerSet(arr: [1, 2])
-powerSet(arr: [1, 2, 3])
+/// 4.7 Build Order: You are given a list of projects and a list of dependencies (which is a list of pairs of projects,wherethesecondprojectisdependentonthefirstproject).Allofaproject'sdependencies must be built before the project is. Find a build order that will allow the projects to be built. If there is no valid build order, return an error.
+//
+//func buildOrder(projects: [String], dependencies : [[String]]) -> [String] {
+//    var dependencyGraph = [String: [String]]()
+//    projects.forEach {  dependencyGraph[$0] = [] }
+//    var inDegree = [String: Int]()
+//    var projectOrder = [String]()
+//    var stack = [String]()
+//
+//    dependencies.forEach { dependency in
+//        let dependent = dependency[1]
+//        let dependee = dependency[0]
+//        dependencyGraph[dependee]?.append(dependent)
+//        inDegree[dependent, default: 0] += 1
+//    }
+//
+//    if inDegree.count == projects.count { return [] }
+//
+//    projects.forEach { project in
+//        if inDegree[project, default: 0] == 0 {
+//            stack.append(project)
+//        }
+//    }
+//
+//    while !stack.isEmpty {
+//        let project = stack.removeFirst()
+//        projectOrder.append(project)
+//
+//        for dependentProject in dependencyGraph[project]! {
+//            inDegree[dependentProject, default: 0] -= 1
+//
+//            if inDegree[dependentProject, default: 0] == 0 {
+//                stack.append(dependentProject)
+//            }
+//        }
+//    }
+//
+//    return projectOrder.count == projects.count ? projectOrder : []
+//}
+//
+//buildOrder(projects: ["a", "b", "c", "d", "e", "f" ],
+//           dependencies: [["a", "d"], ["f", "b"], ["b", "d"], ["f", "a"], ["d","c"]])
+
