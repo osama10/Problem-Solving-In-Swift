@@ -414,3 +414,186 @@ import Foundation
 //buildOrder(projects: ["a", "b", "c", "d", "e", "f" ],
 //           dependencies: [["a", "d"], ["f", "b"], ["b", "d"], ["f", "a"], ["d","c"]])
 
+/*
+ You are climbing a staircase. It takes n steps to reach the top.
+ 
+ Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+ */
+
+//func climbStairs(_ n: Int) -> Int {
+//    guard n > 2 else { return n == 0 ? 0 : n }
+//    var numberOfWays = Array(repeating: 0, count: n + 1)
+//    numberOfWays[1] = 1
+//    numberOfWays[2] = 2
+//
+//    for steps in 3...n {
+//        numberOfWays[steps] = numberOfWays[steps - 1] + numberOfWays[steps - 2]
+//    }
+//
+//    return numberOfWays[n]
+//}
+//
+//climbStairs(5)
+
+
+//func knapsack(_ profit: [Int],
+//              _ weights: [Int],
+//              _ totalWeight: Int,
+//              _ index: Int,
+//              _ memo: inout[[Int]]) -> Int {
+//
+//    if totalWeight == 0 || index == 0 { return 0 }
+//    if memo[index][totalWeight] != -1 { return memo[index][totalWeight] }
+//
+//    if weights[index - 1] > totalWeight {
+//        memo[index][totalWeight] = knapsack(profit, weights, totalWeight, index - 1, &memo)
+//
+//        return memo[index][totalWeight]
+//    }
+//
+//    memo[index][totalWeight] =  max(
+//    knapsack(profit, weights, totalWeight, index - 1, &memo),
+//        profit[index - 1] + knapsack(profit, weights, totalWeight - weights[index - 1], index - 1, &memo))
+//
+//    return memo[index][totalWeight]
+//
+//}
+//
+//var memo = Array(repeating: Array(repeating: -1, count: 51), count: 4)
+//knapsack([ 60, 100, 120 ], [ 10, 20, 30 ], 50, 3, &memo)
+
+func subsetSum(_ set: [Int],
+               _ sum: Int,
+               _ index: Int,
+               _ memo: inout[[Bool?]]) -> Bool {
+    
+    if index <= 0 { return false }
+    if sum == 0 { return true }
+
+    if let result = memo[index][sum]  { return result }
+    if set[index - 1] > sum {
+        memo[index][sum] = subsetSum(set, sum, index - 1, &memo)
+        return memo[index][sum]!
+    }
+    
+    memo[index][sum] = subsetSum(set, sum, index - 1, &memo) ||
+                       subsetSum(set, sum - set[index - 1], index - 1, &memo)
+
+    return memo[index][sum]!
+}
+
+let set = [3, 34, 4, 12, 5, 2]
+let sum = 30
+
+var memo: [[Bool?]] = Array(repeating: Array(repeating: nil, count: sum + 1),
+                            count: set.count + 1)
+
+subsetSum(set, sum, set.count, &memo)
+
+func canPartition(_ nums: [Int]) -> Bool {
+    let sum = nums.reduce(0, +)
+    
+    if sum % 2 != 0 { return false } // if odd, return false
+  
+    var memo: [[Bool?]] = Array(repeating: Array(repeating: nil, count: sum/2 + 1),
+                                count: nums.count + 1)
+
+    return subsetSum(nums, sum/2, nums.count, &memo)
+}
+
+
+func countSubset(_ arr: [Int],
+                 _ targetSum: Int,
+                 _ n: Int,
+                 _ memo: inout [[Int]]) -> Int {
+    
+    if targetSum == 0 { return 1 }
+    if n == 0 { return 0 }
+    if memo[n][targetSum] != -1 { return memo[n][targetSum] }
+    
+    if arr[n - 1] > targetSum {
+        memo[n][targetSum] = countSubset(arr, targetSum, n - 1 , &memo)
+        return memo[n][targetSum]
+    }
+    
+    memo[n][targetSum] = countSubset(arr, targetSum, n - 1 , &memo) +
+        countSubset(arr, targetSum - arr[n - 1], n - 1 , &memo)
+  
+    return memo[n][targetSum]
+    
+}
+
+func countSubsetSum(_ arr: [Int], _ targetSum: Int) -> Int {
+    var memo = Array(repeating: Array(repeating: -1, count: targetSum + 1),
+                     count: arr.count + 1)
+    return countSubset(arr, targetSum, arr.count, &memo)
+}
+
+countSubsetSum([1, 1, 1, 1], 1)
+
+
+func findMinSubsetDiff(_ arr: [Int],
+                       _ totalSum: Int,
+                       _ calSum: Int,
+                       _ n: Int,
+                       _ memo: inout [[Int]]) -> Int {
+    
+    if  n == 0 { return abs((totalSum - calSum) - calSum) }
+    
+    if memo[n][calSum] != -1 { return memo[n][calSum] }
+    
+    let sumWithN = findMinSubsetDiff(arr, totalSum, calSum + arr[n - 1], n - 1, &memo)
+    let sumWithOutN = findMinSubsetDiff(arr, totalSum, calSum , n - 1, &memo)
+
+    memo[n][calSum] = min(sumWithN, sumWithOutN)
+    
+    return memo[n][calSum]
+    
+}
+
+
+func minSubDiffernece(_ arr: [Int]) -> Int {
+    let totalSum = arr.reduce(0, +)
+    var memo = Array(repeating: Array(repeating: -1, count: totalSum + 1),
+                     count: arr.count + 1)
+    return findMinSubsetDiff(arr, totalSum, 0,arr.count, &memo)
+}
+
+minSubDiffernece([1, 6, 11, 5])
+
+func calculateWays(_ nums: [Int],
+                   _ target: Int,
+                   _ currentSum: Int,
+                   _ n: Int,
+                   _ total: Int,
+                   _ memo: inout [[Int]]) -> Int {
+    
+    if n == 0 {
+        return target == currentSum ? 1 : 0
+    }
+    
+    if memo[n][currentSum + total] != -1 { return memo[n][currentSum + total] }
+    
+    memo[n][currentSum + total] = calculateWays(nums,
+                                                target,
+                                                currentSum + nums[n - 1],
+                                                n - 1,
+                                                total,
+                                                &memo) + calculateWays(nums,
+                                                                       target,
+                                                                       currentSum - nums[n - 1],
+                                                                       n - 1,
+                                                                       total,
+                                                                       &memo)
+    
+    return memo[n][currentSum + total]
+    
+}
+
+func findTargetSumWays(_ nums: [Int], _ target: Int) -> Int {
+    let total = nums.reduce(0, +)
+    var memo = Array(repeating: Array(repeating: -1, count: 2 * total + 1), count: nums.count + 1)
+    return calculateWays(nums, target, 0, nums.count, total, &memo)
+}
+
+findTargetSumWays([1], 1)

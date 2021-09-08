@@ -6,11 +6,21 @@ func minSubset(_ arr:[Int]) -> Int {
 }
 
 func findMinSubset(_ arr: [Int], _ sum: Int, _ calSum: Int, _ index: Int, _ cache: inout [[Int?]]) -> Int {
-    if index == 0 { return abs((sum - calSum) - calSum) }
-    if let difference = cache[index][calSum] { return difference }
+   
+    if index == 0 {
+        return abs((sum - calSum) - calSum)
+    }
+    
+    if let difference = cache[index][calSum] {
+        return difference
+    }
+    
     let differenceWithIndex = findMinSubset(arr, sum, calSum + arr[index - 1],  index - 1, &cache)
+    
     let differencWithOutIndex = findMinSubset(arr, sum, calSum ,  index - 1, &cache)
+    
     cache[index][calSum] = min(differenceWithIndex, differencWithOutIndex)
+    
     return cache[index][calSum] ?? 0
 }
 
