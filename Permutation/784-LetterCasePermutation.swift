@@ -18,6 +18,7 @@ func backtrack(_ str: Array<String.Element>, index: Int, previousStr: String, al
         backtrack(str, index: index + 1, previousStr: previousStr + String(str[index]), allPermuations: &allPermuations)
     } else {
         backtrack(str, index: index + 1, previousStr: previousStr + str[index].lowercased(), allPermuations: &allPermuations)
+       
         backtrack(str, index: index + 1, previousStr: previousStr + str[index].uppercased(), allPermuations: &allPermuations)
     }
 }

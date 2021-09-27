@@ -3,8 +3,6 @@ import Foundation
 
 /// 684
 
-
-
 class DisjointSet {
     var parent = [Int]()
     var rank : [Int]

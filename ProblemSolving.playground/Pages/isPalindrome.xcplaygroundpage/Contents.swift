@@ -38,8 +38,6 @@ func reverse(_ node: ListNode?) -> ListNode? {
     return prev
 }
 
-
-
 func checkPalindrome( _ head: ListNode?) -> Bool {
     var fast = head, slow = head
 

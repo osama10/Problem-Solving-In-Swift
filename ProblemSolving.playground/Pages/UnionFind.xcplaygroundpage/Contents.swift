@@ -19,12 +19,12 @@ class DisjointSet {
     }
 
 
-    func union(_ element1: Int, _ element2: Int) {
+    func union(_ element1: Int, _ element2: Int) -> Bool {
 
         let element1Rep = find(element1)
         let element2Rep = find(element2)
 
-        if element1Rep == element2Rep { return }
+        if element1Rep == element2Rep { return false }
 
         if rank[element1Rep] < rank[element2Rep] { parent[element1Rep] = element2Rep }
         else if rank[element1Rep] > rank[element2Rep] { parent[element2Rep] = element1Rep }
@@ -32,10 +32,8 @@ class DisjointSet {
             parent[element1Rep] = element2Rep
             rank[element2Rep] += 1
         }
-    }
-
-    func areElementsInSameSet(_ element1: Int, _ element2: Int) {
-        print(find(element1) == find(element2) ? "Yes" : "No")
+        
+        return true
     }
 }
 
@@ -52,7 +50,7 @@ func runTestCases(_ n: Int, q: Int, queries: [[Int]]) {
         if query[0] == 0 {
             islands.union(element1, element2)
         } else if query[0] == 1 {
-            islands.areElementsInSameSet(element1, element2)
+            //islands.areElementsInSameSet(element1, element2)
         }
     }
 }
