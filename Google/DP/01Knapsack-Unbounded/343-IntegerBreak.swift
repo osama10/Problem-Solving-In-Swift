@@ -14,6 +14,12 @@
  Input: n = 10
  Output: 36
  Explanation: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36.
+ 
+ 
+ 
+ 3 + 1 = 3
+ 2 + 2 = 4
+ 1 + 3 = 3
  */
 
 func integerBreak(_ n: Int) -> Int {

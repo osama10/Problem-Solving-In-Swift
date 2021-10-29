@@ -1,3 +1,28 @@
+class Solution1 {
+func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {
+    
+    guard let p = p,
+          let q = q
+    else { return nil }
+    
+    return lca(root, p, q)
+}
+
+func lca(_ root: TreeNode?, _ p: TreeNode, _ q: TreeNode) -> TreeNode? {
+    guard let root = root else { return nil }
+    
+    if root.val < p.val && root.val < q.val {
+        return lca(root.right, p, q)
+    } else if root.val > p.val && root.val > q.val {
+        return lca(root.left, p, q)
+    } else {
+        return root
+    }
+}
+    
+}
+
+
 func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {
     
     guard let p = p,
@@ -36,4 +61,3 @@ func lcaUtils(_ root: TreeNode?, _ target: TreeNode, _ ancestor: inout [TreeNode
 
     return false
 }
-

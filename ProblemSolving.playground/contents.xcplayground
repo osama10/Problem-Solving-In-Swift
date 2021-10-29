@@ -85,5 +85,6 @@
         <page name='longestprefixmatching'/>
         <page name='shortestUniquePrefix'/>
         <page name='WordBreak'/>
+        <page name='PractisePlayGround'/>
     </pages>
 </playground>

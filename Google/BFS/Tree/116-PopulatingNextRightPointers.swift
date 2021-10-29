@@ -1,20 +1,23 @@
+class Solution {
+func connect(_ root: Node?) -> Node? {
     guard let root = root else { return root }
     var queue = [root]
     
-    
     while !queue.isEmpty {
-        var level = [Node]()
-        var prevNode : Node?
-        for node in queue {
-            prevNode?.next = node.left
-            node.left?.next = node.right
-            prevNode = node.right
-            if node.left != nil { level.append(node.left!) }
-            if node.right != nil { level.append(node.right!) }
+        let size = queue.count - 1
+            for i in 0...size {
+                let node = queue.removeFirst()
+                if i != size {
+                    node.next = queue.first
+                }
+                
+                if node.left != nil { queue.append(node.left!) }
+             if node.right != nil { queue.append(node.right!) }
+            }
         }
-        
-        queue = level
-    }
     
     return root
 }
+
+}
+

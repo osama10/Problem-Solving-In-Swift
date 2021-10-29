@@ -19,6 +19,7 @@
                 newChildren.append(rightChild)
             }
         }
+        
         result.append(level)
         queue = newChildren
     }
