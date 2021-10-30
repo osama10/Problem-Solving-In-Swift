@@ -298,70 +298,42 @@
 //withUnsafePointer(to: &val1.value) { print("\($0)") }
 //
 
+var maxLength = 0
 
-//[-1 , 0, 4, 9] == [0, -36, 0, 0]
-//lef [1, -1, 0, 0]
-//right [0, 36, 9, 1]
-//result = [0, -36, 0, 0]
+func longestConsecutive(_ root: TreeNode?) -> Int {
+    0
+}
 
-/*
- case 1 - No zero
- - i can do the multiplication of all numbers
- - at each point just divide that number with it
- 
- case 2 - When I have zero
- - iterate through the array
- - if it's not zero mulitplu to get the product
- - iterate again
-    - if i'ts zeror then put the muliplication
-    - 0
- 
- Algorithm two would be
- 
- - initilaize lefProductArr
- - initiliaze rightProductArr
- - from 1 till the end
-    - leftProductArr[i] = leftProductArr[i - 1] * nums[i - 1]
- 
- */
-
-[
-[0, 0, 0, 0, 1, 1, 0, 1, 0],
-[0, 1, 1, 0, 1, 1, 0, 1, 0],
-[0, 1, 1, 0, 0, 0, 0, 1, 0],
-[0, 1, 1, 0, 1, 1, 1, 1, 0],
-[0, 0, 0, 0, 1, 0, 0, 0, 0],
-[0, 0, 0, 0, 1, 1, 1, 1, 0],
-[0, 0, 0, 0, 1, 1, 1, 1, 0],
-[0, 0, 0, 0, 1, 1, 1, 1, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
-
-/*
- - only find 1s
- - i can move in 4 directions
- - I want to find the max connected 1
- - Algorithm
-    - maxComponent = 0
-    - for every row
-        for every col
-            - if mat[row][col] != -1
-                count = 0
-               dfs(mat, row, col, count, mat[row][col])
-              maxComponent = max(maxComponent, count)
- 
- - DFS
-    if !valid(row, col) || mat[row][col] == -1 || mat[row][col] != target return
- 
-    mat[row][col] = -1
-    count += 1
- 
-    dfs(mat, row - 1, col, count, target)
-    dfs(mat, row + 1, col, count, target)
-    dfs(mat, row, col + 1, count, target)
-    dfs(mat, row, col - 1, count, target)
-
- time O(RC)
- space O
- */
-
+func dfs(_ root: TreeNode?) -> Int {
+    guard let root = root else { return 0 }
+    
+    let leftCount = dfs(root.left)
+    let rightCount = dfs(root.right)
+    
+    var length = 1
+    
+    if let left = root.left,
+       let right = root.right {
+        if (left.val == root.val + 1 && right.val == root.val - 1) ||
+            (left.val == root.val - 1 && right.val == root.val + 1) {
+            length += leftCount + rightCount
+            maxLength = max(length, maxLength)
+            return max(leftCount, rightCount) + 1
+        }
+    }
+    
+    if let left = root.left {
+        if left.val == root.val + 1 || left.val == root.val - 1 {
+            length += leftCount
+        }
+    }
+    
+    if let right = root.right {
+        if right.val == root.val + 1 || right.val == root.val - 1 {
+            length += rightCount
+        }
+    }
+    
+    maxLength = max(length, maxLength)
+    return length
+}

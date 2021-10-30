@@ -16,11 +16,11 @@ class Solution {
         var arrowLeft = 0
 
        if let left = root.left, left.val == root.val {
-           arrowLeft += 1 + leftVal
+           arrowLeft = 1 + leftVal
        }
         
         if let right = root.right, right.val == root.val {
-           arrowRight += 1 + rightVal
+           arrowRight = 1 + rightVal
        }
         
         longestPath = max(longestPath, arrowRight + arrowLeft)
