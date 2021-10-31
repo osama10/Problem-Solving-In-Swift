@@ -298,42 +298,73 @@
 //withUnsafePointer(to: &val1.value) { print("\($0)") }
 //
 
-var maxLength = 0
+var islands = [[(row: Int, col: Int)]]()
 
-func longestConsecutive(_ root: TreeNode?) -> Int {
-    0
+func countSubIslands(_ grid1: [[Int]], _ grid2: [[Int]]) -> Int {
+    var grid2 = grid2
+    
+    for row in 0..<grid2.count {
+        for col in 0..<grid2[0].count {
+            if grid2[row][col] == 1 {
+                var island = [(row: Int, col: Int)]()
+                dfs(&grid2, row, col, &island)
+                islands.append(island)
+            }
+        }
+    }
+    
+    var subIslands = 0
+    
+    for island in islands {
+        var isSubIsland = true
+        
+        for area in island {
+            if !isIsland(grid1, area.row, area.col) {
+                isSubIsland = false
+                break
+            }
+        }
+        
+        if isSubIsland {
+            subIslands += 1
+        }
+    }
+
+    return subIslands
+    
 }
 
-func dfs(_ root: TreeNode?) -> Int {
-    guard let root = root else { return 0 }
+func isIsland(_ grid: [[Int]], _ row: Int, _ col: Int) -> Bool {
+     if row < 0
+    || row >= grid.count
+    || col < 0
+    || col >= grid[0].count
+    || grid[row][col] == 0 { return false }
     
-    let leftCount = dfs(root.left)
-    let rightCount = dfs(root.right)
-    
-    var length = 1
-    
-    if let left = root.left,
-       let right = root.right {
-        if (left.val == root.val + 1 && right.val == root.val - 1) ||
-            (left.val == root.val - 1 && right.val == root.val + 1) {
-            length += leftCount + rightCount
-            maxLength = max(length, maxLength)
-            return max(leftCount, rightCount) + 1
-        }
-    }
-    
-    if let left = root.left {
-        if left.val == root.val + 1 || left.val == root.val - 1 {
-            length += leftCount
-        }
-    }
-    
-    if let right = root.right {
-        if right.val == root.val + 1 || right.val == root.val - 1 {
-            length += rightCount
-        }
-    }
-    
-    maxLength = max(length, maxLength)
-    return length
+    return true
 }
+
+func dfs(_ grid: inout [[Int]],
+         _ row: Int,
+         _ col: Int,
+         _ island: inout[(row: Int, col: Int)]) {
+    if row < 0
+    || row >= grid.count
+    || col < 0
+    || col >= grid[0].count
+    || grid[row][col] == 0 { return }
+    
+    grid[row][col] = 0
+    
+    island.append((row, col))
+    
+    dfs(&grid, row + 1, col, &island)
+    dfs(&grid, row - 1, col, &island)
+    dfs(&grid, row, col + 1, &island)
+    dfs(&grid, row, col - 1, &island)
+}
+
+let grid1 = [[1,1,1,1,0,0],[1,1,0,1,0,0],[1,0,0,1,1,1],[1,1,1,0,0,1],[1,1,1,1,1,0],[1,0,1,0,1,0],[0,1,1,1,0,1],[1,0,0,0,1,1],[1,0,0,0,1,0],[1,1,1,1,1,0]]
+let grid2 = [[1,1,1,1,0,1],[0,0,1,0,1,0],[1,1,1,1,1,1],[0,1,1,1,1,1],[1,1,1,0,1,0],[0,1,1,1,1,1],[1,1,0,1,1,1],[1,0,0,1,0,1],[1,1,1,1,1,1],[1,0,0,1,0,0]]
+
+countSubIslands(grid1, grid2)
