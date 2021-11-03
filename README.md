@@ -1,5 +1,5 @@
-# Problem Solving [In progress]
-Programing questions solution in swift
+# Problem Solving 
+Programing questions solutions in swift
 
 ## [Tries](https://github.com/osama10/Problem-Solving-In-Swift/tree/main/Tries)
 - Can be use to find prefixs. Some applications are autocomplete search, spell checker etc
