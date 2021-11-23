@@ -3,33 +3,28 @@ import Foundation
 /// https://www.youtube.com/watch?v=WYqsg5dziaQ
 /// 332
 func findItinerary(_ tickets: [[String]]) -> [String] {
-
     var graph = [String: [String]]()
-    var route = [String]()
-
-    // creating graph
-    for ticket in tickets { graph[ticket[0], default: [String]()].append(ticket[1]) }
-
-    // sorting in-place
-    graph.keys.forEach { graph[$0]?.sort( by: > ) }
-
-    // creating path
-    dfs(&graph, "JFK", &route)
-
-    return route.reversed()
+    var itenary = [String]()
+    
+    for ticket in tickets {
+        let source = ticket[0]
+        let destination = ticket[1]
+        graph[source, default: [String]()].append(destination)
+    }
+    
+    graph.keys.forEach { key in graph[key]?.sort(by: > ) }
+    
+    buildItenary(&graph, "JFK", &itenary)
+    return itenary.reversed()
 }
 
-func dfs(_ graph: inout [String: [String]], _ node: String, _ routes: inout[String]) {
-
-    if graph[node] != nil {
-        while !graph[node]!.isEmpty {
-            if let next = graph[node]?.removeLast() {
-                dfs(&graph, next, &routes)
-            }
+func buildItenary(_ graph: inout [String: [String]], _ source: String, _ itenary: inout [String]) {
+    while !graph[source, default: [String]()].isEmpty {
+        if let destination = graph[source]?.removeLast() {
+            buildItenary(&graph, destination, &itenary)
         }
     }
-
-    routes.append(node)
+    itenary.append(source)
 }
 
 findItinerary(

@@ -27,11 +27,9 @@ func threeSum(_ nums: [Int]) -> [[Int]] {
         }
     }
     
-    
     for (i, num) in nums.enumerated() {
         if i != 0 && nums[i - 1] == nums[i] { continue }
-          twoSum(i + 1, nums.count-1, -num) 
-            
+          twoSum(i + 1, nums.count-1, -num)
     }
     
     return result

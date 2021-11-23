@@ -14,44 +14,33 @@
 
 class Codec {
     let nullString = "#"
-    
+ 
     func serialize(_ root: TreeNode?) -> String {
         guard let root = root else { return nullString }
-        let leftStr = serialize(root.left)
-        let rightStr = serialize(root.right)
-        
-        return [String(root.val), leftStr, rightStr].joined(separator: ",")
+        let leftString = serialize(root.left)
+        let rightString = serialize(root.right)
+        return ["\(root.val)", leftString, rightString]
+            .joined(separator: ",")
     }
-    
-    func deserialize(_ data: String) -> TreeNode? {
-        var nodes = data
-        .split(separator: ",")
-        .reversed()
-        .map { String($0) }
+
+    func deserialize(_ string: String) -> TreeNode? {
+        var nodeVals: [String] = string
+                        .split(separator: ",")
+                        .map(String.init)
+                        .reversed()
         
-        return createTree(&nodes)
+        return buildTree(&nodeVals)
     }
-    
-    func createTree(_ nodeList: inout [String]) -> TreeNode? {
-        if nodeList.isEmpty {
-            return nil
-        }
+
+    func buildTree(_ nodeVals: inout [String]) -> TreeNode? {
+        guard !nodeVals.isEmpty else { return nil }
+        let value = nodeVals.removeLast()
+        guard value != nullString else { return nil }
         
-        let value = nodeList.removeLast()
+        let left = buildTree(&nodeVals)
+        let right = buildTree(&nodeVals)
         
-        if value == nullString {
-            return nil
-        }
-        
-        let root = TreeNode(Int(value)!)
-        let left = createTree(&nodeList)
-        let right = createTree(&nodeList)
-        
-        root.left = left
-        root.right = right
-        
-        return root
-        
+        return TreeNode(Int(value)!, left, right)
     }
 }
 

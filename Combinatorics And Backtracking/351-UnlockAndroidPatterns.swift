@@ -1,52 +1,43 @@
 class Solution {
-
-var maxNum = 0
-var minNum = 0
-var case1 = Set(arrayLiteral: 1, 3, 7, 9)
-var case2 = Set(arrayLiteral: 2, 4, 6, 8)
-var result = 0
-
-var visited = Array(repeating: false, count: 10)
 func numberOfPatterns(_ m: Int, _ n: Int) -> Int {
-    maxNum = n
-    minNum = m
+    let case1 = Set([1, 3, 7, 9])
+    let case2 = Set([2, 4, 6, 8])
+    var totalPatterns = 0
+    var visited = Array(repeating: false, count: 10)
     
-    for curr in 1...9 {
-        findValidPatterns(curr, 1)
-    }
-  
-    return result
-    
-}
-
-func findValidPatterns(_ curr: Int, _ total: Int)  {
-    if total > maxNum {
-        return
-    }
-    
-    if total >= minNum {
-        result += 1
-    }
-	
-    visited[curr] = true
-
-    for next in 1...9 {
-        if visited[next] {
-            continue
+    func findNumberOfValidPatterns(_ currTotal: Int, _ currNum: Int) {
+        if currTotal > n {
+            return
         }
         
-        if case1.contains(curr) && case1.contains(next) && !visited[(curr + next) / 2] {
-            continue
+        if currTotal >= m {
+            totalPatterns += 1
         }
         
-        if case2.contains(curr) && 10 - curr == next && !visited[5]{
-            continue
+        visited[currNum] = true
+        
+        for nextNum in 1...9 {
+            if visited[nextNum] { continue }
+            
+            if case1.contains(currNum)
+                && case1.contains(nextNum)
+                && !visited[(currNum + nextNum)/2]
+            { continue }
+            
+            if case2.contains(currNum) && currNum + nextNum == 10 && !visited[5] {
+                continue
+            }
+            
+            findNumberOfValidPatterns(currTotal + 1, nextNum)
         }
-
-        findValidPatterns(next, total + 1)
-
+        
+        visited[currNum] = false
     }
-        visited[curr] = false
+    
+    for num in 1...9 {
+        findNumberOfValidPatterns(1, num)
+    }
+    
+    return totalPatterns
 }
-
 }
