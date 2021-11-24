@@ -218,71 +218,69 @@
 //    return result
 //}
 
-func reverseBetween(_ head: ListNode?, _ left: Int, _ right: Int) -> ListNode? {
-    let dummy: ListNode? = ListNode(0, head)
-    var before = dummy
+typealias Pair = (max: Int, min: Int)
+let noValue = (max: Int.min, min: Int.max)
+
+func maxProduct(_ grid: [[Int]], _ row: Int, _ col: Int, _ memo: inout [String: Pair]) -> Pair {
+    let maxRow = grid.count - 1
+    let maxCol = grid[0].count - 1
+    let key = "\(row)-\(col)"
     
-    for _ in 1..<left {
-        before = before?.next
+    if row == maxRow && col == maxCol {
+        return (grid[maxRow][maxCol], grid[maxRow][maxCol])
     }
     
-    let sublistTail = before?.next
-    var prev: ListNode? = nil
-    var current = sublistTail
-    
-    for _ in left...right {
-        let next = current?.next
-        current?.next = prev
-        prev = current
-        current = next
+    if let pair = memo[key] {
+        return pair
     }
     
-    before?.next = prev
-    sublistTail?.next = current
+    var result = noValue
+    let value = grid[row][col]
     
-    return dummy?.next
-    
-}
-
-func reverseKGroup(_ head: ListNode?, _ k: Int) -> ListNode? {
-    guard let head = head, k > 1 else { return head }
-
-    let dummy: ListNode? = ListNode(0, head)
-    var before = dummy
-    var count = nodeCount(head) / k
-    
-    while(count > 0) {
-        let sublistTail = dummy?.next
-        var prev: ListNode? = nil
-        var current = sublistTail
+    if row + 1 < grid.count {
+        let pair = maxProduct(grid, row + 1, col, &memo)
         
-        for _ in 0..<k {
-            let next = current?.next
-            current?.next = prev
-            prev = current
-            current = next
-            
-            if current == nil { break }
+        if pair.max != Int.max && pair.max != Int.min {
+            result.max = max(result.max, value * pair.max)
+            result.min = min(result.min, value * pair.max)
         }
         
-        before?.next = prev
-        sublistTail?.next = current
-        
-        before = sublistTail
-        count -= 1
+        if pair.min != Int.max && pair.min != Int.min {
+            result.max = max(result.max, value * pair.min)
+            result.min = min(result.min, value * pair.min)
+        }
+       
     }
     
-    return dummy?.next
+    if col + 1 < grid[0].count {
+        let pair = maxProduct(grid, row, col + 1, &memo)
+        
+        if pair.max != Int.max && pair.max != Int.min {
+            result.max = max(result.max, value * pair.max)
+            result.min = min(result.min, value * pair.max)
+        }
+        
+        if pair.min != Int.max && pair.min != Int.min {
+            result.max = max(result.max, value * pair.min)
+            result.min = min(result.min, value * pair.min)
+        }
+    }
+    
+    memo[key] = result
+    return result
 }
 
-func nodeCount(_ head: ListNode?) -> Int {
-    var curr = head
-    var count = 0
-   
-    while curr != nil {
-        count += 1
-        curr = curr?.next
-    }
+func maxProductPath(_ grid: [[Int]]) -> Int {
+    let mod = Int(1e9 + 7)
+    let maxRow = grid.count - 1
+    let maxCol = grid[0].count - 1
     
-    return count
+    if grid[0][0] == 0 || grid[maxRow][maxCol] == 0 { return 0 }
+    var memo = [String: Pair]()
+   
+    let result = maxProduct(grid, 0, 0, &memo)
+    
+    return (result.max < 0 || result.max == Int.max || result.max == Int.min) ? -1 : result.max % mod
 }
+
+maxProductPath(<#T##grid: [[Int]]##[[Int]]#>)
