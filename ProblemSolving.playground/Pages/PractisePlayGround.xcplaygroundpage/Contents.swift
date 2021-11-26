@@ -218,69 +218,103 @@
 //    return result
 //}
 
-typealias Pair = (max: Int, min: Int)
-let noValue = (max: Int.min, min: Int.max)
-
-func maxProduct(_ grid: [[Int]], _ row: Int, _ col: Int, _ memo: inout [String: Pair]) -> Pair {
-    let maxRow = grid.count - 1
-    let maxCol = grid[0].count - 1
-    let key = "\(row)-\(col)"
+func decodeString(_ s: String) -> String {
+    var result = ""
+    var number = 0
+    var stack = [(prev: String, freq: Int)]()
     
-    if row == maxRow && col == maxCol {
-        return (grid[maxRow][maxCol], grid[maxRow][maxCol])
-    }
-    
-    if let pair = memo[key] {
-        return pair
-    }
-    
-    var result = noValue
-    let value = grid[row][col]
-    
-    if row + 1 < grid.count {
-        let pair = maxProduct(grid, row + 1, col, &memo)
-        
-        if pair.max != Int.max && pair.max != Int.min {
-            result.max = max(result.max, value * pair.max)
-            result.min = min(result.min, value * pair.max)
-        }
-        
-        if pair.min != Int.max && pair.min != Int.min {
-            result.max = max(result.max, value * pair.min)
-            result.min = min(result.min, value * pair.min)
-        }
-       
-    }
-    
-    if col + 1 < grid[0].count {
-        let pair = maxProduct(grid, row, col + 1, &memo)
-        
-        if pair.max != Int.max && pair.max != Int.min {
-            result.max = max(result.max, value * pair.max)
-            result.min = min(result.min, value * pair.max)
-        }
-        
-        if pair.min != Int.max && pair.min != Int.min {
-            result.max = max(result.max, value * pair.min)
-            result.min = min(result.min, value * pair.min)
+    for char in s {
+        switch char {
+        case _ where char.isNumber:
+            number = number * 10 + Int(String(char))!
+        case "[":
+            stack.append((result, number))
+            number = 0
+            result = ""
+        case "]":
+            let last = stack.removeLast()
+            result = last.prev + String(repeating: result, count: last.freq)
+            stack.append((prev: result, freq: number))
+        default:
+            result.append(char)
         }
     }
     
-    memo[key] = result
     return result
 }
 
-func maxProductPath(_ grid: [[Int]]) -> Int {
-    let mod = Int(1e9 + 7)
-    let maxRow = grid.count - 1
-    let maxCol = grid[0].count - 1
-    
-    if grid[0][0] == 0 || grid[maxRow][maxCol] == 0 { return 0 }
-    var memo = [String: Pair]()
-   
-    let result = maxProduct(grid, 0, 0, &memo)
-    
-    return (result.max < 0 || result.max == Int.max || result.max == Int.min) ? -1 : result.max % mod
+func canCross(_ stones: [Int]) -> Bool {
+    canCrossRiver(stones, 1)
 }
 
-maxProductPath(<#T##grid: [[Int]]##[[Int]]#>)
+func canCrossRiver(_ stones: [Int], _ index: Int) -> Bool {
+    print(index)
+    if index > stones.count - 1 {
+        return false
+    }
+    
+    if index == stones.count - 1 {
+        return true
+    }
+    
+    let k = stones[index]
+    
+    if k > index {
+        if canCrossRiver(stones, k) {
+            return true
+        }
+    }
+    
+    if k + 1 > index {
+        if canCrossRiver(stones, k + 1) {
+            return true
+        }
+    }
+    
+    if k - 1 > index {
+        print("k-1", k-1, index)
+        if canCrossRiver(stones, k - 1) {
+            return true
+        }
+    }
+    
+    return false
+}
+
+canCross([0,1,2,3,4,8,9,11])
+
+func verticalTraversal(_ root: TreeNode?) -> [[Int]] {
+    guard let root = root else { return [] }
+    
+    var queue = [(node: root, column: 0)]
+    var result = [[Int]]()
+    var dict = [Int: Heap<Int>]()
+    var minCol = Int.max
+    var maxCol = Int.min
+    
+    while !queue.isEmpty {
+        let (node, column) = queue.removeFirst()
+        dict[column, default: Heap<Int>(sort: < )].insert(node.val)
+        
+        minCol = min(minCol, column)
+        maxCol = max(maxCol, column)
+        
+        if let leftChild = node.left {
+            queue.append((leftChild, column - 1))
+        }
+        
+        if let rightChild = node.right {
+            queue.append((rightChild, column + 1))
+        }
+    }
+    
+    
+    for i in minCol...maxCol {
+        if let child = dict[i] {
+            while child.isEm
+            result.append(child)
+        }
+    }
+    
+    return result
+}

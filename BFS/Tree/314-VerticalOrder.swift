@@ -1,5 +1,5 @@
  func verticalOrder(_ root: TreeNode?) -> [[Int]] {
-          guard let root = root else { return [] }
+    guard let root = root else { return [] }
 
     var queue = [(node: root, column: 0)]
     var result = [[Int]]()
