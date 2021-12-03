@@ -218,103 +218,119 @@
 //    return result
 //}
 
-func decodeString(_ s: String) -> String {
-    var result = ""
-    var number = 0
-    var stack = [(prev: String, freq: Int)]()
+//var index = 0
+//
+//func braceExpansionII(_ expression: String) -> [String] {
+//    Array(parse(Array(expression))).sorted()
+//}
+//
+//func parse(_ expression: [Character]) -> Set<String> {
+//    var curr = Set<String>()
+//    var res = Set<String>()
+//
+//    while index < expression.count {
+//        let char = expression[index]
+//
+//        if char.isLetter {
+//            let str = parseChar(expression)
+//            if curr.isEmpty {
+//                curr.insert(str)
+//            } else {
+//                curr = product(curr, [str])
+//            }
+//            //index += 1
+//
+//        } else if char == "{" {
+//            index += 1
+//            let result = parse(expression)
+//            if curr.isEmpty {
+//                curr = result
+//            } else {
+//                curr = product(curr, result)
+//            }
+//        } else if char == "}" {
+//            index += 1
+//            break
+//        } else {
+//            res = res.union(curr)
+//            index += 1
+//            curr = Set()
+//        }
+//    }
+//
+//    return res
+//}
+//
+//
+//func product(_ set1: Set<String>, _ set2: Set<String>) -> Set<String> {
+//    var product = Set<String>()
+//
+//    for val1 in set1 {
+//        for val2 in set2 {
+//            product.insert(val1 + val2)
+//        }
+//    }
+//    print(product)
+//    return product
+//}
+//
+//func parseChar(_ expression: [Character]) -> String {
+//    var result = ""
+//
+//    while index < expression.count && expression[index].isLetter {
+//        result.append(expression[index])
+//        index += 1
+//    }
+//    //print(result)
+//    return result
+//}
+//
+//
+//braceExpansionII("{a,b}{c,{d,e}}")
+
+func mostVisitedPattern(_ username: [String], _ timestamp: [Int], _ website: [String]) -> [String] {
+    var websiteScore = [String: Set<String>]()
+    var userHistory = [String: [(String, Int)]]()
     
-    for char in s {
-        switch char {
-        case _ where char.isNumber:
-            number = number * 10 + Int(String(char))!
-        case "[":
-            stack.append((result, number))
-            number = 0
-            result = ""
-        case "]":
-            let last = stack.removeLast()
-            result = last.prev + String(repeating: result, count: last.freq)
-            stack.append((prev: result, freq: number))
-        default:
-            result.append(char)
-        }
+    for i in 0..<username.count {
+        userHistory[username[i], default: []].append((website[i], timestamp[i]))
     }
     
-    return result
+    userHistory.forEach { (user,data) in
+        userHistory[user]?.sort{ $0.1 < $1.1 }
+    }
+    
+    print(userHistory)
+    var pattern = [String]()
+    
+    for (user, data) in userHistory {
+        patternCount(user, data, 0, &pattern, &websiteScore)
+    }
+    
+    let result = websiteScore
+        .sorted { $0.value.count > $1.value.count
+            || $0.value.count == $1.value.count && $0.key < $1.key }
+    
+    return result[0].key
+        .split(separator: "-")
+        .map(String.init)
 }
 
-func canCross(_ stones: [Int]) -> Bool {
-    canCrossRiver(stones, 1)
+func patternCount(_ user: String ,_ websites: [(String, Int)], _ start: Int , _ pattern: inout [String],_ websiteScore: inout [String: Set<String>]) {
+    if pattern.count == 3 {
+        websiteScore[pattern.joined(separator: "-"), default: []].insert(user)
+    } else {
+        if start < websites.count {
+            for index in start...websites.count-1 {
+                pattern.append(websites[index].0)
+                patternCount(user, websites, index + 1, &pattern, &websiteScore)
+                pattern.removeLast()
+            }
+        }
+    }
 }
 
-func canCrossRiver(_ stones: [Int], _ index: Int) -> Bool {
-    print(index)
-    if index > stones.count - 1 {
-        return false
-    }
-    
-    if index == stones.count - 1 {
-        return true
-    }
-    
-    let k = stones[index]
-    
-    if k > index {
-        if canCrossRiver(stones, k) {
-            return true
-        }
-    }
-    
-    if k + 1 > index {
-        if canCrossRiver(stones, k + 1) {
-            return true
-        }
-    }
-    
-    if k - 1 > index {
-        print("k-1", k-1, index)
-        if canCrossRiver(stones, k - 1) {
-            return true
-        }
-    }
-    
-    return false
-}
 
-canCross([0,1,2,3,4,8,9,11])
-
-func verticalTraversal(_ root: TreeNode?) -> [[Int]] {
-    guard let root = root else { return [] }
-    
-    var queue = [(node: root, column: 0)]
-    var result = [[Int]]()
-    var dict = [Int: Heap<Int>]()
-    var minCol = Int.max
-    var maxCol = Int.min
-    
-    while !queue.isEmpty {
-        let (node, column) = queue.removeFirst()
-        dict[column, default: Heap<Int>(sort: < )].insert(node.val)
-        
-        minCol = min(minCol, column)
-        maxCol = max(maxCol, column)
-        
-        if let leftChild = node.left {
-            queue.append((leftChild, column - 1))
-        }
-        
-        if let rightChild = node.right {
-            queue.append((rightChild, column + 1))
-        }
-    }
-    
-    
-    for i in minCol...maxCol {
-        if let child = dict[i] {
-            while child.isEm
-            result.append(child)
-        }
-    }
-    
-    return result
-}
+mostVisitedPattern(["h","eiy","cq","h","cq","txldsscx","cq","txldsscx","h","cq","cq"],[527896567,334462937,517687281,134127993,859112386,159548699,51100299,444082139,926837079,317455832,411747930],
+                   ["hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","yljmntrclw","hibympufi","yljmntrclw"]
+)

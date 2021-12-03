@@ -35,7 +35,6 @@ class Solution {
     }
     
     func intersect(_ start1: Int, _ end1: Int, _ start2: Int, _ end2: Int) -> Bool {
-        (start1 >= start2 && start1 <= end2
-        || start2 >= start1  && start2 <= end1 )
+        (start1 >= start2 && start1 <= end2 || start2 >= start1  && start2 <= end1 )
     }
 }
