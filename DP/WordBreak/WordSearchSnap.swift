@@ -1,5 +1,5 @@
 // https://leetcode.com/discuss/interview-question/125011/Snapchat-or-Word-Finder
-func wordBreakSimple(_ word: String, _ wordMap: [String], _ memo: inout [String: Int]) -> Int {
+func wordBreakSimple(_ word: String, _ wordMap: Set<String>, _ memo: inout [String: Int]) -> Int {
    
     if word.isEmpty {
         return 0
@@ -28,17 +28,24 @@ func wordBreakSimple(_ word: String, _ wordMap: [String], _ memo: inout [String:
 
 func getSimpleWords(_ words: [String]) -> [String] {
     var result = [String]()
+    var words = Set(words)
     
     for word in words {
         var memo = [String: Int]()
-        if wordBreakSimple(word, words, &memo) == 1{
+        words.remove(word)
+       
+        if wordBreakSimple(word, words, &memo) == Int.min {
            result.append(word)
         }
+        
+        words.insert(word)
     }
     
     return result
 }
 
-let result = getSimpleWords(["chat", "ever", "snapchat", "snap", "salesperson", "per", "person", "sales", "son", "whatsoever", "whatso"])
+let result1 = getSimpleWords(["snap", "snapchat", "chat"])
+let result2 = getSimpleWords(["chat", "ever", "snapchat", "snap", "salesperson", "per", "person", "sales", "son", "whatsoever", "whatso"])
 
-print(result)
+print(result1) // [snap, chat]
+print(result2) // ["chat", "per", "sales", "snap", "ever", "son", "whatso"]

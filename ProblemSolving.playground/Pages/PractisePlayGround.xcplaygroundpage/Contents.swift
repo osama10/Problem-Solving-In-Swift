@@ -118,6 +118,8 @@
 //
 //}
 
+import Darwin
+
 
 //typealias Info = (node: String, request: Int, mutexId: String)
 //func detectDeadlock(_ data:[Info]) -> Int {
@@ -287,53 +289,30 @@
 //
 //
 //braceExpansionII("{a,b}{c,{d,e}}")
-
-typealias Job = (start: Int, end: Int, profit: Int)
-var memo = Array(repeating: -1, count: 5001)
-
-func jobScheduling(_ startTime: [Int], _ endTime: [Int], _ profit: [Int]) -> Int {
-    let jobs: [Job] = startTime
-    .enumerated()
-    .map { (startTime[$0.offset], endTime[$0.offset], profit[$0.offset]) }
-    .sorted{ $0.start < $1.start }
-    
-    return maxProfit(jobs, 0)
-}
-
-func maxProfit(_ jobs: [Job], _ index: Int) -> Int {
-    if index >= jobs.count {
-        return 0
-    }
-        
-    if memo[index] != -1 {
-        return memo[index]
-    }
-    
-    let currentJob = jobs[index]
-    let nextIndex = findNextJob(jobs, currentJob.end)
+func countOrders(_ n: Int) -> Int {
+       var orders = Array(repeating: "", count: 2 * n)
+       
+       for id in 1...n {
+           orders[id - 1] = "p\(id)"
+           orders[id] = "d\(id)"
+       }
     
     
-    let profit1 = maxProfit(jobs, index + 1)
-    let profit2 = maxProfit(jobs, nextIndex) + currentJob.profit
-    
-    memo[index] = max(profit1, profit2)
-    return memo[index]
-}
-
-func findNextJob(_ jobs: [Job], _ endTime: Int) -> Int {
-    var start = 0
-    var end = jobs.count - 1
-    var nextIndex = jobs.count
-    
-    while start <= end {
-        let mid = (start + end) / 2
-        if jobs[mid].start >= endTime {
-            nextIndex = mid
-            end = mid - 1
-        } else {
-            start = mid + 1
-        }
-    }
-    
-    return nextIndex
-}
+    return 0
+   }
+   
+   
+   func calCount(_ orders: [String], _ combination: Set<String>, _ total: Int) -> Int {
+      
+       if combination.count == total {
+           return 0
+       }
+       
+       var count = 0
+       
+       for order in orders {
+           
+       }
+           
+       
+   }
