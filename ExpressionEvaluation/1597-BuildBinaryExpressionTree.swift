@@ -11,28 +11,6 @@ public class Node {
     }
 }
 
-func levelOrderTraversal(_ root: Node?) -> [Character] {
-    guard let root = root else { return [] }
-    var queue = [root]
-    var result = [Character]()
-    
-    while !queue.isEmpty {
-        let count = queue.count
-        
-        for _ in 0..<count {
-            let parent = queue.removeFirst()
-            result.append(parent.val)
-            guard let leftChild = parent.left,
-                  let rightChild = parent.right
-            else { continue }
-            queue.append(leftChild)
-            queue.append(rightChild)
-        }
-    }
-    
-    return result
-}
-
 func operatorPrecedence(_ char: Character) -> Int {
     switch char {
     case "+", "-": return 1
@@ -90,6 +68,28 @@ func expTree(_ expression: String) -> Node {
     }
     
     return stack[0]
+}
+
+func levelOrderTraversal(_ root: Node?) -> [Character] {
+    guard let root = root else { return [] }
+    var queue = [root]
+    var result = [Character]()
+    
+    while !queue.isEmpty {
+        let count = queue.count
+        
+        for _ in 0..<count {
+            let parent = queue.removeFirst()
+            result.append(parent.val)
+            guard let leftChild = parent.left,
+                  let rightChild = parent.right
+            else { continue }
+            queue.append(leftChild)
+            queue.append(rightChild)
+        }
+    }
+    
+    return result
 }
 
 levelOrderTraversal(expTree("1+2+3+4+5"))

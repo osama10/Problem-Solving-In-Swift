@@ -6,6 +6,7 @@ func countSubstrings(_ s: String) -> Int {
         dp[i][i] = true
         count += 1
     }
+    
     let sArr = Array(s)
     
     for start in stride(from: s.count - 1, to: -1, by: -1) {

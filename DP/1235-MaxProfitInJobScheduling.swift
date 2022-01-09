@@ -6,6 +6,7 @@ class Solution {
         .enumerated()
         .map { (startTime[$0.offset], endTime[$0.offset], profit[$0.offset]) }
         .sorted{ $0.start < $1.start }
+        
         var memo = Array(repeating: -1, count: startTime.count + 1)
         return maxProfit(jobs, 0, &memo)
     }
@@ -21,7 +22,6 @@ class Solution {
         
         let currentJob = jobs[index]
         let nextIndex = findNextJob(jobs, currentJob.end)
-        
         
         let profit1 = maxProfit(jobs, index + 1, &memo) 
         let profit2 = maxProfit(jobs, nextIndex, &memo) + currentJob.profit

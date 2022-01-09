@@ -12,7 +12,8 @@
 
 class Solution {
 func employeeFreeTime(_ schedule: [[Interval]]) -> [Interval] {
-    let schedule = mergeIntervals(schedule.flatMap { $0 }.sorted { $0.start < $1.start })
+    let schedule = mergeIntervals(schedule.flatMap { $0 }
+                                    .sorted { $0.start < $1.start })
     var result = [Interval]()
     
     if schedule.count == 1 { return [] }

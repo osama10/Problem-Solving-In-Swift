@@ -31,6 +31,7 @@ func infixToPostFix(_ expression: String) -> [String] {
                 postfixExp.append(last)
                 stack.removeLast()
             }
+            
             stack.append(char)
         }
     }

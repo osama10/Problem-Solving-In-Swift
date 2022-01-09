@@ -1,5 +1,4 @@
 class Solution {
-    
     func operations(_ token: String) -> (Int, Int) -> Int {
         switch token {
         case "+": return { $0 + $1 }
