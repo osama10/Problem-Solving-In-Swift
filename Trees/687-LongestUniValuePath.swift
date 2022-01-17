@@ -1,30 +1,27 @@
 class Solution {
-    var longestPath = 0
-    
-    func longestUnivaluePath(_ root: TreeNode?) -> Int {
-        dfs(root)
-        return longestPath
-    }
-    
-    func dfs(_ root: TreeNode?)  -> Int {
-        guard let root = root else { return  0 }
-        
-        let leftVal = dfs(root.left)
-        let rightVal = dfs(root.right)
-        
-        var arrowRight = 0
-        var arrowLeft = 0
+var longestPathLength = 0
 
-       if let left = root.left, left.val == root.val {
-           arrowLeft = 1 + leftVal
-       }
+func longestUnivaluePath(_ root: TreeNode?) -> Int {
+    dfs(root)
+    return longestPathLength
+}
+
+func dfs(_ root: TreeNode?) -> Int {
+    guard let root = root else { return -1 }
+    
+    var leftPath = dfs(root.left) + 1
+    var rightPath = dfs(root.right) + 1
         
-        if let right = root.right, right.val == root.val {
-           arrowRight = 1 + rightVal
-       }
-        
-        longestPath = max(longestPath, arrowRight + arrowLeft)
-        
-        return max(arrowRight, arrowLeft)
+    if let leftVal = root.left?.val, leftVal != root.val {
+        leftPath = 0
     }
+
+    if let rightVal = root.right?.val, rightVal != root.val {
+        rightPath = 0
+    }
+    
+    longestPathLength = max(longestPathLength, leftPath + rightPath)
+    
+    return max(leftPath, rightPath)
+    
 }

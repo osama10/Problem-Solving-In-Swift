@@ -29,6 +29,7 @@ func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
               }
           }
       }
+    
       return result.count == numCourses
   }
 

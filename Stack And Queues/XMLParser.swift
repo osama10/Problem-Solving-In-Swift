@@ -20,6 +20,7 @@ func xmlParser(_ xml: String) -> XMLNode {
         
         if tokenStr[tokenStr.startIndex] == "<" {
             let secondIndex = tokenStr.index(after: tokenStr.startIndex)
+            
             if tokenStr[secondIndex] == "/" {
                 if stack.count <= 1 { break }
                 let childNode = stack.removeLast()
