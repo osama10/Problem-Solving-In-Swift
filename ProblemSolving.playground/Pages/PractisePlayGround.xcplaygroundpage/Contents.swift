@@ -1,29 +1,261 @@
-var longestPathLength = 0
-
-func longestUnivaluePath(_ root: TreeNode?) -> Int {
-    dfs(root)
-    return longestPathLength
+enum FileType {
+    case directory
+    case file(content: String)
 }
 
-func dfs(_ root: TreeNode?) -> Int {
-    guard let root = root else { return 0 }
+class TrieNode {
+    var key: String?
+    var children = [String: TrieNode]()
+    var type: FileType
     
-    var leftPath = dfs(root.left)
-    var rightPath = dfs(root.right)
+    init(_ type: FileType = .directory) {
+        self.type = type
+    }
+    
+    func addChild(_ child: String, _ type: FileType = .directory) -> TrieNode {
+        if let childNode = children[child] { return childNode }
+        let node = TrieNode(type)
+        node.key = child
+        children[child] = node
+        return node
+    }
+    
+    func getChild(_ child: String) -> TrieNode? { children[child] }
+}
+
+class Trie {
+    var root = TrieNode()
+    
+    init() {
+        root.addChild("/")
+    }
+    
+    func addPath(_ path: String, _ type: FileType) {
+        guard path != "/",
+              var curr = root.getChild("/")
+        else { return }
+       
+        let fileNames = path
+            .split(separator: "/")
+            .map(String.init)
         
-    if let leftVal = root.left?.val, leftVal != root.val {
-        leftPath = 0
+        for fileName in fileNames {
+            curr = curr.addChild(fileName)
+        }
+        
+        if case let .file(newContent) = type {
+            if case let .file(storedConent) = curr.type {
+                curr.type = .file(content: storedConent + newContent)
+            } else {
+                curr.type = type
+            }
+        }
+        
     }
-
-    if let rightVal = root.right?.val, rightVal != root.val {
-        rightPath = 0
+    
+    func mkdir(_ path: String) {
+        addPath(path, .directory)
     }
     
-    longestPathLength = max(longestPathLength, leftPath + rightPath + 1)
+    func addContentsToFile(_ path: String, _ content: String) {
+        addPath(path, .file(content: content))
+    }
     
-    return max(leftPath, rightPath) + 1
+    func searchPath(_ path: String) -> TrieNode? {
+        guard var curr = root.getChild("/") else { return nil }
+       
+        let fileNames = path
+            .split(separator: "/")
+            .map(String.init)
+        
+        for fileName in fileNames {
+            guard let nextNode = curr.getChild(fileName) else { return nil }
+            curr = nextNode
+        }
+        
+        return curr
+    }
     
+    func ls(_ path: String) -> [String] {
+        guard let node = searchPath(path) else { return [] }
+        
+        switch node.type {
+        case .file(_): return [node.key ?? ""]
+        case .directory: return node.children.keys.sorted()
+        }
+    }
+    
+    func readContentFromFile(_ path: String) -> String {
+        guard let node = searchPath(path) else { return "" }
+        
+        if case let .file(content) = node.type {
+            return content
+        }
+        
+        return ""
+    }
 }
+
+class FileSystem {
+    var trie = Trie()
+   
+    init() {
+        
+    }
+    
+    func ls(_ path: String) -> [String] {
+        trie.ls(path)
+    }
+    
+    func mkdir(_ path: String) {
+        trie.mkdir(path)
+    }
+    
+    func addContentToFile(_ filePath: String, _ content: String) {
+        trie.addContentsToFile(filePath, content)
+    }
+    
+    func readContentFromFile(_ filePath: String) -> String {
+        trie.readContentFromFile(filePath)
+    }
+}
+
+let fileSystem = FileSystem()
+fileSystem.ls("/")
+fileSystem.mkdir("/a/b/c")
+fileSystem.addContentToFile("/a/b/c/d", "hello")
+fileSystem.ls("/")
+fileSystem.readContentFromFile("a/b/c/d")
+fileSystem.addContentToFile("/a/b/c/d", " hello hello")
+fileSystem.readContentFromFile("a/b/c/d")
+
+fileSystem.addContentToFile("/f", "osama")
+fileSystem.ls("/a/b/c/d")
+fileSystem.readContentFromFile("/sdf")
+
+func getListOfBuyableItems(_ menu: [String: Double], _ budget: Double) -> [[String]] {
+    var allList = [[String]]()
+    var list = [String]()
+    let menu = menu.map{ (item: $0.key, cost: $0.value) }
+    getList(menu, 0, budget, &list, &allList)
+    return allList
+}
+
+func getList(_ menu: [(item: String, cost: Double)],_ start: Int, _ budget: Double, _ list: inout [String], _ allList: inout [[String]])  {
+    
+    if budget == 0 {
+        allList.append(list)
+    } else {
+        for index in start...menu.count-1 {
+            let item = menu[index]
+            if budget >= item.cost {
+                list.append(item.item)
+                getList(menu, index, budget - item.cost, &list, &allList)
+                list.removeLast()
+            }
+        }
+    }
+}
+
+var menu = ["Fruit": 2.15,
+            "Fries": 2.75,
+            "Salad": 3.35,
+            "Wings": 3.55,
+            "Mozzarella": 4.20,
+            "Plate": 5.80]
+
+getListOfBuyableItems(menu, 4.30) // [["Fruit", "Fruit"]]
+getListOfBuyableItems(menu, 5.50) // [["Fruit", "Salad"], ["Fries", "Fries"]]
+getListOfBuyableItems(menu, 2.15) // [["Fruit"]]
+
+
+
+
+//class TrieNode {
+//
+//    var key: Character?
+//    var isWord = false
+//    var word = ""
+//    var children = [Character: TrieNode]()
+//
+//    func insert(_ char: Character) -> TrieNode {
+//        if let node = children[char] { return node }
+//        let node = TrieNode()
+//        node.key = char
+//        children[char] = node
+//        return node
+//    }
+//}
+//
+//class Trie {
+//    var root = TrieNode()
+//
+//    func addWord(_ word: String) {
+//        var currNode = root
+//
+//        for char in word {
+//            currNode = currNode.insert(char)
+//        }
+//
+//        currNode.isWord = true
+//        currNode.word = word
+//    }
+//
+//    func isConcatenated(_ word: [Character], _ index: Int, _ root: TrieNode) -> [[String]]? {
+//        print(index)
+//
+//        if word.count == index {
+//            print("last")
+//            return [[]]
+//        }
+//
+//        var curr = root
+//        var results = [[String]]()
+//
+//        for i in index...word.count - 1 {
+//            let char = word[i]
+//            guard let node = curr.children[char] else { return nil }
+//
+//            if node.isWord {
+//                if let partialResults = isConcatenated(word, i + 1, node) {
+//                    print(partialResults)
+//                    for partialResult in partialResults  {
+//                        if partialResult.isEmpty {
+//                            results.append([node.word])
+//                        } else {
+//                            results.append([node.word] + partialResult)
+//                        }
+//                    }
+//                }
+//            }
+//
+//            curr = node
+//        }
+//
+//        return results
+//    }
+//}
+//
+//func isConcatenated(_ words: [String]) -> [[String]] {
+//    let trie = Trie()
+//    words.forEach(trie.addWord)
+//
+//    var results = [[String]]()
+//
+//    for word in words {
+//        let word = Array(word)
+//        if let concatenated = trie.isConcatenated(word, 0, trie.root) {
+//            //print(results)
+//            if concatenated.count > 1 {
+//                results.append(contentsOf: concatenated)
+//            }
+//        }
+//    }
+//
+//    return results
+//}
+//
+//isConcatenated(["rockstar", "rock", "star", "rocks", "tar", "stars", "rockstars", "super", "highway", "high", "way", "superhighway"])
 
 
 //class TrieNode {
@@ -169,130 +401,130 @@ final class EventLogger {
     private var events: [Event] = []
     
     init() {
-       
+        
     }
     
     func logEvents(_ events: [Event]) {
-
+        
     }
     
     func logEvent(_ event: Event) {
-    
+        
         serialQueue.async {
             self.events.append(event)
         }
     }
 }
 
-protocol Node: AnyObject {
-    func evaluate() -> Int
-    var left: Node? { get set }
-    var right: Node? { get set }
-
-}
-
-final class AddNode: Node {
-    var left: Node?
-    var right: Node?
-    
-    func evaluate() -> Int {
-        guard let lefVal = left?.evaluate(),
-                let rightVal = right?.evaluate() else { return 0 }
-        return lefVal + rightVal
-    }
-}
-
-final class SubNode: Node {
-    var left: Node?
-    var right: Node?
-    
-    func evaluate() -> Int {
-        guard let lefVal = left?.evaluate(),
-                let rightVal = right?.evaluate() else { return 0 }
-        return lefVal - rightVal
-    }
-}
-
-final class MulNode: Node {
-    var left: Node?
-    var right: Node?
-    
-    func evaluate() -> Int {
-        guard let lefVal = left?.evaluate(),
-                let rightVal = right?.evaluate() else { return 0 }
-        return lefVal * rightVal
-    }
-}
-
-final class DivNode: Node {
-    var left: Node?
-    var right: Node?
-    
-    func evaluate() -> Int {
-        guard let lefVal = left?.evaluate(),
-                let rightVal = right?.evaluate() else { return 0 }
-        return lefVal / rightVal
-    }
-}
-
-final class NumNode: Node {
-    var left: Node?
-    var right: Node?
-    
-    let val: Int
-    
-    init(_ val: Int) {
-        self.val = val
-    }
-    
-    func evaluate() -> Int {
-       val
-    }
-}
-
-final class NodeBuilder {
-    static func build(_ char: String) -> Node {
-        switch char {
-        case "+": return AddNode()
-        case "-": return SubNode()
-        case "*": return MulNode()
-        case "/": return DivNode()
-        default: return NumNode(Int(char)!)
-        }
-    }
-}
-
-final class TreeBuilder {
-    
-    func buildTree( _ postfix: [String]) -> Node? {
-        var stack = [Node]()
-        for char in postfix {
-            let node = NodeBuilder.build(char)
-            if Int(char) == nil {
-                let b = stack.removeLast()
-                let a = stack.removeLast()
-                node.left = a
-                node.right = b
-            }
-            stack.append(node)
-        }
-        
-        return stack.first
-    }
-    
-    func evaluate(_ root: Node?) -> Int {
-        guard let root = root else { return 0 }
-        
-        root.left?.evaluate()
-        root.right?.evaluate()
-        
-        return root.evaluate()
-    }
-}
-
-let treeBuilder = TreeBuilder()
-treeBuilder.evaluate(treeBuilder.buildTree(["3","4","+","2","*","7","/"])) // 2
-treeBuilder.evaluate(treeBuilder.buildTree(["4","5","2","7","+","-","*"])) // -16
+//protocol Node: AnyObject {
+//    func evaluate() -> Int
+//    var left: Node? { get set }
+//    var right: Node? { get set }
+//
+//}
+//
+//final class AddNode: Node {
+//    var left: Node?
+//    var right: Node?
+//
+//    func evaluate() -> Int {
+//        guard let lefVal = left?.evaluate(),
+//                let rightVal = right?.evaluate() else { return 0 }
+//        return lefVal + rightVal
+//    }
+//}
+//
+//final class SubNode: Node {
+//    var left: Node?
+//    var right: Node?
+//
+//    func evaluate() -> Int {
+//        guard let lefVal = left?.evaluate(),
+//                let rightVal = right?.evaluate() else { return 0 }
+//        return lefVal - rightVal
+//    }
+//}
+//
+//final class MulNode: Node {
+//    var left: Node?
+//    var right: Node?
+//
+//    func evaluate() -> Int {
+//        guard let lefVal = left?.evaluate(),
+//                let rightVal = right?.evaluate() else { return 0 }
+//        return lefVal * rightVal
+//    }
+//}
+//
+//final class DivNode: Node {
+//    var left: Node?
+//    var right: Node?
+//
+//    func evaluate() -> Int {
+//        guard let lefVal = left?.evaluate(),
+//                let rightVal = right?.evaluate() else { return 0 }
+//        return lefVal / rightVal
+//    }
+//}
+//
+//final class NumNode: Node {
+//    var left: Node?
+//    var right: Node?
+//
+//    let val: Int
+//
+//    init(_ val: Int) {
+//        self.val = val
+//    }
+//
+//    func evaluate() -> Int {
+//       val
+//    }
+//}
+//
+//final class NodeBuilder {
+//    static func build(_ char: String) -> Node {
+//        switch char {
+//        case "+": return AddNode()
+//        case "-": return SubNode()
+//        case "*": return MulNode()
+//        case "/": return DivNode()
+//        default: return NumNode(Int(char)!)
+//        }
+//    }
+//}
+//
+//final class TreeBuilder {
+//
+//    func buildTree( _ postfix: [String]) -> Node? {
+//        var stack = [Node]()
+//        for char in postfix {
+//            let node = NodeBuilder.build(char)
+//            if Int(char) == nil {
+//                let b = stack.removeLast()
+//                let a = stack.removeLast()
+//                node.left = a
+//                node.right = b
+//            }
+//            stack.append(node)
+//        }
+//
+//        return stack.first
+//    }
+//
+//    func evaluate(_ root: Node?) -> Int {
+//        guard let root = root else { return 0 }
+//
+//        root.left?.evaluate()
+//        root.right?.evaluate()
+//
+//        return root.evaluate()
+//    }
+//}
+//
+//let treeBuilder = TreeBuilder()
+//treeBuilder.evaluate(treeBuilder.buildTree(["3","4","+","2","*","7","/"])) // 2
+//treeBuilder.evaluate(treeBuilder.buildTree(["4","5","2","7","+","-","*"])) // -16
 
 func hasPath(_ maze: [[Int]], _ start: [Int], _ destination: [Int]) -> Int {
     let directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
@@ -310,10 +542,10 @@ func hasPath(_ maze: [[Int]], _ start: [Int], _ destination: [Int]) -> Int {
                 var nextPos = (row: node.row + dir[0], col: node.col + dir[1], distance: node.distance + 1)
                 
                 while !(nextPos.row < 0
-                    || nextPos.row >= maze.count
-                    || nextPos.col < 0
-                    || nextPos.col >= maze[0].count
-                    || maze[nextPos.row][nextPos.col] == 1) {
+                        || nextPos.row >= maze.count
+                        || nextPos.col < 0
+                        || nextPos.col >= maze[0].count
+                        || maze[nextPos.row][nextPos.col] == 1) {
                     nextPos = (row: nextPos.row + dir[0], col: nextPos.col + dir[1], distance: nextPos.distance + 1)
                     count += 1
                 }
