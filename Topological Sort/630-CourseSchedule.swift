@@ -1,51 +1,27 @@
 class Solution {
-     func findClosestElements(_ arr: [Int], _ k: Int, _ x: Int) -> [Int] {
-        
-        let index = binSearch(arr, 0, arr.count - 1, x)
-        let low = max(0, index - k)
-        let high = min(arr.count - 1,index + k)
-        print(low, high, index)
-         var minHeap = Heap<(diff: Int, index: Int)>
-         { $0.diff < $1.diff
-            || ($0.diff == $1.diff && arr[$0.index] < arr[$1.index])  }
-        
-        for i in low...high {
-            minHeap.insert((abs(arr[i] - x), i))
-        }
-        
-        var result = [Int]()
-        
-        for _ in 0..<k {
-            if let top = minHeap.remove() {
-                result.append(arr[top.index])
+    func scheduleCourse(_ courses: [[Int]]) -> Int {
+        let courses = courses.sorted { $0[1] < $1[1] }
+        var maxHeap = Heap<Int>(sort: > )
+        var time = 0
+
+        for course in courses {
+            let duration = course[0]
+            let maxTime = course[1]
+
+            if time + duration <= maxTime {
+                maxHeap.insert(duration)
+                time += duration
+            } else if let last = maxHeap.peek(), last > duration {
+                time -= last
+                time += duration
+                maxHeap.remove()
+                maxHeap.insert(duration)
             }
         }
-        
-        return result.sorted()
-    }
-    
-    func binSearch(_ arr: [Int], _ start: Int, _ end: Int, _ target: Int) -> Int {
-        var start = start
-        var end = end
-        
-        while start < end {
-           let mid = start + (end - start) / 2
-            
-            if arr[mid] == target {
-                return mid
-            }else if arr[mid] < target {
-                start = mid + 1
-            } else {
-                end = mid - 1
-            }
-        
-        }
-        
-        return start == 0 ? 0 : start - 1
-       
+
+        return maxHeap.count
     }
 }
-
 
 import Foundation
 

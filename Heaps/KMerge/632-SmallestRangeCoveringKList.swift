@@ -1,51 +1,49 @@
 class Solution {
-     func findClosestElements(_ arr: [Int], _ k: Int, _ x: Int) -> [Int] {
-        
-        let index = binSearch(arr, 0, arr.count - 1, x)
-        let low = max(0, index - k)
-        let high = min(arr.count - 1,index + k)
-        print(low, high, index)
-         var minHeap = Heap<(diff: Int, index: Int)>
-         { $0.diff < $1.diff
-            || ($0.diff == $1.diff && arr[$0.index] < arr[$1.index])  }
-        
-        for i in low...high {
-            minHeap.insert((abs(arr[i] - x), i))
-        }
-        
-        var result = [Int]()
-        
-        for _ in 0..<k {
-            if let top = minHeap.remove() {
-                result.append(arr[top.index])
-            }
-        }
-        
-        return result.sorted()
+   struct Data {
+        var arrIndex: Int
+        var numIndex: Int
+        var value: Int
     }
-    
-    func binSearch(_ arr: [Int], _ start: Int, _ end: Int, _ target: Int) -> Int {
-        var start = start
-        var end = end
-        
-        while start < end {
-           let mid = start + (end - start) / 2
-            
-            if arr[mid] == target {
-                return mid
-            }else if arr[mid] < target {
-                start = mid + 1
-            } else {
-                end = mid - 1
-            }
-        
+
+    func smallestRange(_ nums: [[Int]]) -> [Int] {
+        var minHeap = Heap<Data> { $0.value < $1.value }
+        var minVal = Int.max
+        var maxVal = Int.min
+
+        for i in 0..<nums.count {
+            let data = Data(arrIndex: i, numIndex: 0, value: nums[i][0])
+            minHeap.insert(data)
+            minVal = min(minVal, nums[i][0])
+            maxVal = max(maxVal, nums[i][0])
         }
-        
-        return start == 0 ? 0 : start - 1
-       
+
+        var range = maxVal - minVal
+        var result = [minVal, maxVal]
+
+        while minHeap.count == nums.count {
+            let topElement = minHeap.remove()!
+
+            if nums[topElement.arrIndex].count > topElement.numIndex + 1 {
+                let numIndex = topElement.numIndex + 1
+                let arrIndex = topElement.arrIndex
+                let value = nums[arrIndex][numIndex]
+                let data = Data(arrIndex: arrIndex, numIndex: numIndex, value: value)
+
+                maxVal = max(maxVal, value)
+
+                minHeap.insert(data)
+                minVal = minHeap.peek()!.value
+
+                if (maxVal - minVal) < range {
+                    range = maxVal - minVal
+                    result = [minVal, maxVal]
+                }
+            }
+        }
+
+        return result
     }
 }
-
 
 import Foundation
 
@@ -261,3 +259,4 @@ public struct Heap<T> {
     }
     
 }
+

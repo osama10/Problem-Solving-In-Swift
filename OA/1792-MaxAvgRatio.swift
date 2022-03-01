@@ -1,51 +1,44 @@
-class Solution {
-     func findClosestElements(_ arr: [Int], _ k: Int, _ x: Int) -> [Int] {
+class Solution {    
+    func maxAverageRatio(_ classes: [[Int]], _ extraStudents: Int) -> Double {
+        var maxHeap = Heap<[Int]>(sort: comparator)
         
-        let index = binSearch(arr, 0, arr.count - 1, x)
-        let low = max(0, index - k)
-        let high = min(arr.count - 1,index + k)
-        print(low, high, index)
-         var minHeap = Heap<(diff: Int, index: Int)>
-         { $0.diff < $1.diff
-            || ($0.diff == $1.diff && arr[$0.index] < arr[$1.index])  }
-        
-        for i in low...high {
-            minHeap.insert((abs(arr[i] - x), i))
+        for result in classes {
+            maxHeap.insert(result)
         }
         
-        var result = [Int]()
-        
-        for _ in 0..<k {
-            if let top = minHeap.remove() {
-                result.append(arr[top.index])
+        for student in 1...extraStudents {
+            if var topClass = maxHeap.remove() {
+                topClass[0] += 1
+                topClass[1] += 1
+                maxHeap.insert(topClass)
             }
         }
         
-        return result.sorted()
+        var totalAvgs = 0.0
+        
+        while let topClass = maxHeap.remove() {
+            let avg = Double(topClass[0]) / Double(topClass[1])
+            totalAvgs += avg
+        }
+        
+        
+        return totalAvgs / Double(classes.count)
     }
     
-    func binSearch(_ arr: [Int], _ start: Int, _ end: Int, _ target: Int) -> Int {
-        var start = start
-        var end = end
+    func comparator(_ val1: [Int], _ val2: [Int]) -> Bool {
+        let passed1 = Double(val1[0] )
+        let total1 = Double(val1[1])
         
-        while start < end {
-           let mid = start + (end - start) / 2
-            
-            if arr[mid] == target {
-                return mid
-            }else if arr[mid] < target {
-                start = mid + 1
-            } else {
-                end = mid - 1
-            }
+        let passed2 = Double(val2[0] )
+        let total2 = Double(val2[1])
         
-        }
+        let delta1 = ((passed1 + 1.0) / (total1 + 1.0)) - (passed1 / total1)
+        let delta2 = ((passed2 + 1.0) / (total2 + 1.0)) - (passed2 / total2)
+
+        return delta1 > delta2
         
-        return start == 0 ? 0 : start - 1
-       
     }
 }
-
 
 import Foundation
 

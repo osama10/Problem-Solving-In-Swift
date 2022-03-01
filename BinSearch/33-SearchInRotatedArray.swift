@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/single-element-in-a-sorted-array/solution/1155724
+
 class Solution {
     func search(_ nums: [Int], _ target: Int) -> Int {
         

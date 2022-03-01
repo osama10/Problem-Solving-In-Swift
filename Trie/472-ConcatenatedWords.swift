@@ -4,6 +4,7 @@ class TrieNode {
     var key: Character?
     var isWord = false
     var children = [Character: TrieNode]()
+    var word = ""
     
     func insert(_ char: Character) -> TrieNode {
         if let node = children[char] { return node }
@@ -25,12 +26,13 @@ class Trie {
         }
         
         currNode.isWord = true
+        currNode.word = word
     }
     
-    func isConcatenated(_ word: [Character], _ start: Int, _ root: TrieNode, _ count: Int) -> Bool {
+    func isConcatenated(_ word: [Character], _ start: Int, _ root: TrieNode, _ count: Int, _ temp: inout [String]) -> Bool {
         
-        if word.count == start { return count  > 1 }
-                
+        if word.count == start { return temp.count  > 1 }
+                       
         var currNode = root
         
         for index in start..<word.count {
@@ -41,9 +43,13 @@ class Trie {
             }
             
             if node.isWord {
-                if isConcatenated(word, index + 1, root, count + 1) {
+                temp.append(node.word)
+                
+                if isConcatenated(word, index + 1, root, count + 1, &temp) {
                     return true
                 }
+                
+                temp.removeLast()
             }
             
             currNode = node
@@ -66,8 +72,10 @@ func findAllConcatenatedWordsInADict(_ words: [String]) -> [String] {
     for word in words {
         if !word.isEmpty {
             let wordArr = Array(word)
-            if trie.isConcatenated(wordArr, 0,trie.root, 0) {
+            var temp = [String]()
+            if trie.isConcatenated(wordArr, 0,trie.root, 0, &temp) {
                 result.append(word)
+                print(temp.joined(separator: " "))
             }
         }
     }
@@ -75,4 +83,3 @@ func findAllConcatenatedWordsInADict(_ words: [String]) -> [String] {
     return result
 }
 }
-

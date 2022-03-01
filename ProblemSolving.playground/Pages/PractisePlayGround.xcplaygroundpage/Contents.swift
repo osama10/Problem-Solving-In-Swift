@@ -1,139 +1,223 @@
-enum FileType {
-    case directory
-    case file(content: String)
+
+import UIKit
+import CoreGraphics
+
+protocol ReuseableView {
+    static var reuseIdentifier: String { get }
 }
 
-class TrieNode {
-    var key: String?
-    var children = [String: TrieNode]()
-    var type: FileType
-    
-    init(_ type: FileType = .directory) {
-        self.type = type
+extension ReuseableView {
+    static var reuseIdentifier: String  {
+        String(describing: self)
     }
-    
-    func addChild(_ child: String, _ type: FileType = .directory) -> TrieNode {
-        if let childNode = children[child] { return childNode }
-        let node = TrieNode(type)
-        node.key = child
-        children[child] = node
-        return node
-    }
-    
-    func getChild(_ child: String) -> TrieNode? { children[child] }
 }
 
-class Trie {
-    var root = TrieNode()
+extension UITableViewCell: ReuseableView {}
+extension UITableView {
+    func dequeuReuseableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T {
+        guard let cell = dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as? T else { fatalError() }
+        return cell
+    }
+}
+
+protocol ExampleProto {
+    func functionA()
+}
+
+extension ExampleProto {
+    func functionA() {
+        print("Funtion A of protocol extension")
+    }
+}
+
+struct A: ExampleProto {
+    func functionA() {
+        print("Function A of struct")
+    }
+}
+
+let a: ExampleProto = A()
+a.functionA()
+
+class Ref<T> {
+    var value: T
     
-    init() {
-        root.addChild("/")
+    init(_ value: T) {
+        self.value = value
+    }
+}
+
+struct Box<T> {
+    var ref: Ref<T>
+    
+    init(_ value: T) {
+        ref = Ref(value)
     }
     
-    func addPath(_ path: String, _ type: FileType) {
-        guard path != "/",
-              var curr = root.getChild("/")
-        else { return }
-       
-        let fileNames = path
-            .split(separator: "/")
-            .map(String.init)
-        
-        for fileName in fileNames {
-            curr = curr.addChild(fileName)
+    var value: T {
+        get { ref.value }
+        set {
+            guard isKnownUniquelyReferenced(&ref) else {
+                ref = Ref(newValue)
+                return
+            }
+            
+            ref.value = newValue
         }
-        
-        if case let .file(newContent) = type {
-            if case let .file(storedConent) = curr.type {
-                curr.type = .file(content: storedConent + newContent)
-            } else {
-                curr.type = type
+    }
+    
+    
+}
+
+//class TreeNode {
+//    var val: Character
+//    var left: TreeNode?
+//    var right: TreeNode?
+//
+//    init(_ val: Character) {
+//        self.val = val
+//    }
+//
+//    func evaluate() -> Int {
+//        guard let leftVal = left?.evaluate(),
+//                let rightVal = right?.evaluate()
+//        else { return Int(String(val))! }
+//        return val == "|"
+//        ? (leftVal) | rightVal
+//        : leftVal & rightVal
+//    }
+//}
+//
+//func convertToRPN(_ expr: [Character]) -> [Character] {
+//    var stack = [Character]()
+//    var rpn = [Character]()
+//
+//    for char in expr {
+//        if char.isNumber {
+//            rpn.append(char)
+//        } else if char == "&" || char == "|" {
+//            while let last = stack.last, last != "(" {
+//                rpn.append(stack.removeLast())
+//            }
+//            stack.append(char)
+//        } else if char == "(" {
+//            stack.append(char)
+//        } else {
+//            while let last = stack.last, last != "(" {
+//                rpn.append(stack.removeLast())
+//            }
+//            stack.removeLast()
+//        }
+//    }
+//
+//    while !stack.isEmpty {
+//        rpn.append(stack.removeLast())
+//    }
+//
+//    return rpn
+//}
+//
+//func createTree(_ expr: [Character]) -> TreeNode {
+//    var stack = [TreeNode]()
+//    let rpn = convertToRPN(expr)
+//
+//    for char in rpn {
+//        let node = TreeNode(char)
+//        if !char.isNumber {
+//            let a = stack.removeLast()
+//            let b = stack.removeLast()
+//            node.left = a
+//            node.right = b
+//        }
+//        stack.append(node)
+//    }
+//    print(stack[0].evaluate())
+//    return stack[0]
+//}
+//
+//func minOperationsToFlip(_ expression: String) -> Int {
+//    let root = createTree(Array(expression))
+//    return root.evaluate()
+//}
+//
+//minOperationsToFlip("(0|(0|0&1))")
+//
+//func minFlip(_ root: TreeNode?) -> Int {
+//    guard let root = root else { return 0 }
+//
+//    if root.val.isNumber {
+//        return 1
+//    }
+//
+//    if root.val == "|" {
+//        if root.left?.evaluate() == 0 || root.right?.evaluate() == 0 {
+//            return 1
+//        } else {
+//            return 1 + min(minFlip(root.left), minFlip(root.right))
+//        }
+//    } else {
+//
+//    }
+//
+//}
+
+func shortestPathLength(_ graph: [[Int]]) -> Int {
+    let key: (Int, Int) -> String = { "\($0)-\($1)" }
+    var queue = (0..<graph.count).map { (node: $0, visited: Set<Int>([$0]), path: 0 ) }
+    var seen = [String: Bool]()
+    
+    for node in 0..<graph.count {
+        seen[key(node,1)] = true
+    }
+    
+    while !queue.isEmpty {
+        let count = queue.count
+        for _ in 0..<count {
+            let node = queue.removeFirst()
+            
+            if node.visited.count == graph.count {
+                return node.path
+            }
+            
+            for nextNode in graph[node.node] {
+                let visited = Set<Int>([nextNode]).union(node.visited)
+                let path = node.path + 1
+                
+                if seen[key(nextNode, visited.count), default: false] {
+                    seen[key(nextNode, visited.count)] = true
+                    queue.append((nextNode, visited, path))
+                }
             }
         }
-        
     }
     
-    func mkdir(_ path: String) {
-        addPath(path, .directory)
-    }
-    
-    func addContentsToFile(_ path: String, _ content: String) {
-        addPath(path, .file(content: content))
-    }
-    
-    func searchPath(_ path: String) -> TrieNode? {
-        guard var curr = root.getChild("/") else { return nil }
-       
-        let fileNames = path
-            .split(separator: "/")
-            .map(String.init)
-        
-        for fileName in fileNames {
-            guard let nextNode = curr.getChild(fileName) else { return nil }
-            curr = nextNode
-        }
-        
-        return curr
-    }
-    
-    func ls(_ path: String) -> [String] {
-        guard let node = searchPath(path) else { return [] }
-        
-        switch node.type {
-        case .file(_): return [node.key ?? ""]
-        case .directory: return node.children.keys.sorted()
-        }
-    }
-    
-    func readContentFromFile(_ path: String) -> String {
-        guard let node = searchPath(path) else { return "" }
-        
-        if case let .file(content) = node.type {
-            return content
-        }
-        
-        return ""
-    }
+    return 0
 }
 
-class FileSystem {
-    var trie = Trie()
-   
-    init() {
-        
+shortestPathLength([[1,2,3],[0],[0],[0]]) //
+shortestPathLength([[1],[0,2,4],[1,3,4],[2],[1,2]])
+
+func shortestPalindrome(_ s: String) -> String {
+    let sArr = Array(s)
+    let revArr: [Character] = s.reversed()
+    let total = s.count
+    
+    if sArr == revArr {
+        return s
     }
     
-    func ls(_ path: String) -> [String] {
-        trie.ls(path)
+    for i in 0..<s.count {
+        if sArr.prefix(total - i) ==  revArr.suffix(total - i) {
+            return revArr.prefix(i - 0) + s
+        }
     }
     
-    func mkdir(_ path: String) {
-        trie.mkdir(path)
-    }
-    
-    func addContentToFile(_ filePath: String, _ content: String) {
-        trie.addContentsToFile(filePath, content)
-    }
-    
-    func readContentFromFile(_ filePath: String) -> String {
-        trie.readContentFromFile(filePath)
-    }
+    return ""
 }
 
-let fileSystem = FileSystem()
-fileSystem.ls("/")
-fileSystem.mkdir("/a/b/c")
-fileSystem.addContentToFile("/a/b/c/d", "hello")
-fileSystem.ls("/")
-fileSystem.readContentFromFile("a/b/c/d")
-fileSystem.addContentToFile("/a/b/c/d", " hello hello")
-fileSystem.readContentFromFile("a/b/c/d")
-
-fileSystem.addContentToFile("/f", "osama")
-fileSystem.ls("/a/b/c/d")
-fileSystem.readContentFromFile("/sdf")
-
+shortestPalindrome("aaba")
 func getListOfBuyableItems(_ menu: [String: Double], _ budget: Double) -> [[String]] {
+    // https://stackoverflow.com/questions/68606334/algorithm-or-solution-for-selecting-possible-combinations-of-menu-items-within-a/70814055#70814055
     var allList = [[String]]()
     var list = [String]()
     let menu = menu.map{ (item: $0.key, cost: $0.value) }
@@ -167,9 +251,6 @@ var menu = ["Fruit": 2.15,
 getListOfBuyableItems(menu, 4.30) // [["Fruit", "Fruit"]]
 getListOfBuyableItems(menu, 5.50) // [["Fruit", "Salad"], ["Fries", "Fries"]]
 getListOfBuyableItems(menu, 2.15) // [["Fruit"]]
-
-
-
 
 //class TrieNode {
 //
@@ -394,6 +475,7 @@ struct Event {
 }
 
 import Foundation
+import Darwin
 
 final class EventLogger {
     

@@ -1,52 +1,59 @@
+/*
+This is how algo works
+- so the idea is to add all the earliest day in the heap and then chose the one that will end first
+for example in this case [1,2],[1,2],[1,5],[1,5],[3,3] 
+- we'll sort the array by start date , if conflicting then end date. The result becomes
+	-  [1,2],[1,2],[1,5],[1,5],[3,3] 
+- Now we check for each day if it's possible to attend the event
+- We will add all the events end that start with day ( earliest day on which we can start the event )
+- we will then chose the one that will be finish first
+- We will keep doing this until all the events in the heap are processed 
+*/
 class Solution {
-     func findClosestElements(_ arr: [Int], _ k: Int, _ x: Int) -> [Int] {
-        
-        let index = binSearch(arr, 0, arr.count - 1, x)
-        let low = max(0, index - k)
-        let high = min(arr.count - 1,index + k)
-        print(low, high, index)
-         var minHeap = Heap<(diff: Int, index: Int)>
-         { $0.diff < $1.diff
-            || ($0.diff == $1.diff && arr[$0.index] < arr[$1.index])  }
-        
-        for i in low...high {
-            minHeap.insert((abs(arr[i] - x), i))
-        }
-        
-        var result = [Int]()
-        
-        for _ in 0..<k {
-            if let top = minHeap.remove() {
-                result.append(arr[top.index])
+    func maxEvents(_ events: [[Int]]) -> Int {
+		// sorting array by start date , if conflicting end date
+        let events = events.sorted {
+            if $0[0] == $1[0] {
+                return $0[1] < $1[1]
             }
+            return $0[0] < $1[0]
         }
-        
-        return result.sorted()
-    }
-    
-    func binSearch(_ arr: [Int], _ start: Int, _ end: Int, _ target: Int) -> Int {
-        var start = start
-        var end = end
-        
-        while start < end {
-           let mid = start + (end - start) / 2
-            
-            if arr[mid] == target {
-                return mid
-            }else if arr[mid] < target {
-                start = mid + 1
-            } else {
-                end = mid - 1
+
+        var minHeap = Heap<Int>(sort: < )
+        var day = 1
+        var event = 0 // eventIndex
+        var totalEventsAttended = 0
+
+        while event < events.count || !minHeap.isEmpty {
+            while let top = minHeap.peek(), top < day {
+				//removing the events that are finished
+                minHeap.remove()
             }
-        
+
+            if event < events.count && minHeap.isEmpty {
+				// this is an optimization. If there's no event in the heap. That means we can move our day to next events start date
+                day = max(day, events[event][0])
+            }
+
+            while event < events.count && events[event][0] == day {
+			// adding all the events start by day
+                minHeap.insert(events[event][1])
+                event += 1
+            }
+
+            if !minHeap.isEmpty {
+				// choosing the one that will be finished earliest
+                totalEventsAttended += 1
+                minHeap.remove()
+            }
+
+            day += 1
         }
-        
-        return start == 0 ? 0 : start - 1
-       
+
+        return totalEventsAttended
     }
+
 }
-
-
 import Foundation
 
 public struct Heap<T> {

@@ -1,51 +1,34 @@
-class Solution {
-     func findClosestElements(_ arr: [Int], _ k: Int, _ x: Int) -> [Int] {
+
+class KthLargest {
+    var heap = Heap<Int>{ $0 < $1 }
+    let k: Int
+    
+    init(_ k: Int, _ nums: [Int]) {
+        self.k = k
+        heap.insert(nums)
         
-        let index = binSearch(arr, 0, arr.count - 1, x)
-        let low = max(0, index - k)
-        let high = min(arr.count - 1,index + k)
-        print(low, high, index)
-         var minHeap = Heap<(diff: Int, index: Int)>
-         { $0.diff < $1.diff
-            || ($0.diff == $1.diff && arr[$0.index] < arr[$1.index])  }
-        
-        for i in low...high {
-            minHeap.insert((abs(arr[i] - x), i))
+        while heap.count > k {
+            heap.remove()
         }
-        
-        var result = [Int]()
-        
-        for _ in 0..<k {
-            if let top = minHeap.remove() {
-                result.append(arr[top.index])
-            }
-        }
-        
-        return result.sorted()
     }
     
-    func binSearch(_ arr: [Int], _ start: Int, _ end: Int, _ target: Int) -> Int {
-        var start = start
-        var end = end
-        
-        while start < end {
-           let mid = start + (end - start) / 2
-            
-            if arr[mid] == target {
-                return mid
-            }else if arr[mid] < target {
-                start = mid + 1
-            } else {
-                end = mid - 1
-            }
-        
+    func add(_ val: Int) -> Int {
+        heap.insert(val)
+       
+        if heap.count > k {
+            heap.remove()
         }
         
-        return start == 0 ? 0 : start - 1
-       
+        return heap.peek()!
     }
 }
 
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * let obj = KthLargest(k, nums)
+ * let ret_1: Int = obj.add(val)
+ */
 
 import Foundation
 
