@@ -1,112 +1,93 @@
-public class Node {
-    public var val: Character
-    public var left: Node?
-    public var right: Node?
 
-    public init(_ val: Character) { self.val = val; self.left = nil; self.right = nil; }
-    public init(_ val: Character, _ left: Node?, _ right: Node?) {
-        self.val = val
-        self.left = left
-        self.right = right
-    }
+import Foundation
+// Add any extra import statements you may need here
+
+
+class Node {
+  let data: Int
+  let left: Node?
+  let right: Node?
+    
+  init(_ data: Int, left: Node? = nil, right: Node? = nil) {
+    self.data = data
+    self.left = left
+    self.right = right
+  }
 }
 
-func operatorPrecedence(_ char: Character) -> Int {
-    switch char {
-    case "+", "-": return 1
-    case "*", "/": return 2
-    case "^": return 3
-    default: return 0
-    }
-}
+private extension Node {
+  // Add any helper functions you may need here
 
-func infixToPostFix(_ expression: String) -> String {
-    var stack = [Character]()
-    var postfixExp = ""
-    
-    for char in expression {
-        if char.isNumber || char.isLetter {
-            postfixExp.append(char)
-        } else if char == "(" {
-            stack.append("(")
-        } else if char == ")" {
-            while !stack.isEmpty, let char = stack.last, char != "(" {
-                postfixExp.append(stack.removeLast())
-            }
-            stack.removeLast()
-        } else {
-            while !stack.isEmpty,
-                  let last = stack.last,
-                  operatorPrecedence(char) <= operatorPrecedence(last) {
-                postfixExp.append(last)
-                stack.removeLast()
-            }
-            stack.append(char)
-        }
-    }
-    
-    while !stack.isEmpty {
-        postfixExp.append(stack.removeLast())
-    }
-    
-    return postfixExp
-}
-" (  ( 3  *  4 )   -   ( 2  *  5 )  ) "
-// [ - ]
-// 34*25*-
 
-func expTree(_ expression: String) -> Node {
-    var stack = [Node]()
-    let expression = infixToPostFix(expression)
-   
-    for char in expression {
-        if char.isNumber {
-            stack.append(Node(char))
-        } else {
-            let b = stack.removeLast()
-            let a = stack.removeLast()
-            let operatorNode = Node(char, a, b)
-            stack.append(operatorNode)
-        }
-    }
-    
-    return stack[0]
-}
-
-func getExpr(_ node: Node?) -> String {
-    guard let node = node else { return "" }
-    
-    if node.left == nil && node.right == nil {
-        return "\(node.val)"
-    }
-    
-    let left = getExpr(node.left)
-    let right = getExpr(node.right)
-    
-    return " (\(left)  \(node.val)  \(right)) "
-}
-
-getExpr(expTree("3*4-2*5"))
-func levelOrderTraversal(_ root: Node?) -> [Character] {
-    guard let root = root else { return [] }
-    var queue = [root]
-    var result = [Character]()
+  var visibleNodes: Int {
+    // Write your code here
+    var queue = [self]
+    var totalNodes = 0
     
     while !queue.isEmpty {
-        let count = queue.count
+        let totalNodesInLevel = queue.count
+      
+      for _ in 0..<totalNodesInLevel {
+        let topNode = queue.removeFirst()
         
-        for _ in 0..<count {
-            let parent = queue.removeFirst()
-            result.append(parent.val)
-            guard let leftChild = parent.left,
-                  let rightChild = parent.right
-            else { continue }
-            queue.append(leftChild)
-            queue.append(rightChild)
+        if let leftNode = topNode.left {
+          queue.append(leftNode)
         }
+        
+        if let rightNode = topNode.right {
+          queue.append(rightNode)
+        }
+        
+      }
+      
+      totalNodes += 1
+      
     }
     
-    return result
+    return totalNodes
+
+  }
+  
 }
 
-levelOrderTraversal(expTree("1+2+3+4+5"))
+var testCaseNumber = 1
+
+private func check(_ expectedValue: Int, matches output: Int) {
+  let rightTick = "\u{2713}";
+  let wrongTick = "\u{2717}";
+    
+  let result = expectedValue == output
+  if result {
+      print("\(rightTick) Test #\(testCaseNumber)")
+  } else {
+      print("\(wrongTick) Test #\(testCaseNumber) Expected: \(expectedValue) Your output: \(output)")
+  }
+  testCaseNumber += 1
+}
+
+
+let root1 = Node(8,
+                 left: Node(3,
+                            left: Node(1),
+                            right: Node(6,
+                                        left: Node(4),
+                                        right: Node(7))),
+                 right: Node(10,
+                             right: Node(14,
+                                         left: Node(13))))
+
+check(4, matches: root1.visibleNodes)
+
+let root2 = Node(10,
+                 left: Node(8,
+                            left: Node(4,
+                                       right: Node(5,
+                                                   right: Node(6)))),
+                 right: Node(15,
+                             left: Node(14),
+                             right: Node(16)))
+
+check(5, matches: root2.visibleNodes)
+
+// Add your own test cases here
+
