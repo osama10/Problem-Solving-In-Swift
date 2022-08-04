@@ -43,7 +43,6 @@ func lca(_ root: TreeNode?, _ p: TreeNode, _ q: TreeNode) -> Bool {
     }
     
     return (thisNode + left + right) == 1
-    
 }
 
 }

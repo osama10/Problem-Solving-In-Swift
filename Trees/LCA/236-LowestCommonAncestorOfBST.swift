@@ -61,3 +61,29 @@ func lcaUtils(_ root: TreeNode?, _ target: TreeNode, _ ancestor: inout [TreeNode
 
     return false
 }
+
+
+class Solution3 {
+    var lcaNode: TreeNode?
+    
+    func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {
+        guard let p = p, let q = q else { return nil }
+        let nodes = [p, q]
+        lca2(root, nodes)
+        return lcaNode
+    }
+
+    func lca2(_ root: TreeNode?, _ nodes: [TreeNode]) -> Int {
+        guard let root = root, !nodes.isEmpty else { return 0 }
+        
+        var count = nodes.contains{ $0 === root } ? 1 : 0
+        count += lca2(root.left, nodes)
+        count += lca2(root.right, nodes)
+        
+        if count >= nodes.count && lcaNode == nil {
+            lcaNode = root
+        }
+        
+        return count
+    }
+}
